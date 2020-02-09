@@ -178,6 +178,7 @@
     <ClCompile Include="ConsoleCanvas.cpp" />
     <ClCompile Include="CRenderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.test.cpp" />
     <ClCompile Include="Win32.Console.cpp" />
     <ClCompile Include="Win32.Framebuffer.cpp" />
   </ItemGroup>
