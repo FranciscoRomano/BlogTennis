@@ -27,6 +27,12 @@ namespace Win32 {
         // set background
         void background(const UINT& index, const CHAR& value);
 
+        // blit RGB buffer
+        void blitRGB(const FLOAT* buffer, const UINT& length);
+
+        // blit RGBA buffer
+        void blitRGBA(const FLOAT* buffer, const UINT& length);
+
         // bind callback
         void bind(const Win32::PFN_ConsoleFocusEvent& callback);
 
@@ -51,8 +57,14 @@ namespace Win32 {
         // set ascii character
         void characterW(const UINT& index, const WCHAR& value);
 
+        // set character information
+        void characterInfo(const UINT& index, const CHAR_INFO& value);
+
         // set foreground
         void foreground(const UINT& index, const CHAR& value);
+
+        // simulate pixel
+        void pixel(const UINT& index, const FLOAT& r, const FLOAT& g, const FLOAT& b);
 
         // read ascii input
         void readA();
@@ -62,9 +74,6 @@ namespace Win32 {
 
         // set write region
         void region(const SMALL_RECT& region);
-
-        // set buffer size
-        void size(const SHORT& width, const SHORT& height);
 
         // write ascii buffer
         void writeA();

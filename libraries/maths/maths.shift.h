@@ -2,10 +2,10 @@
 
 #include "maths.vector.h"
 
-#define MATHS_SHIFT_LABEL_0 x,r
-#define MATHS_SHIFT_LABEL_1 y,g
-#define MATHS_SHIFT_LABEL_2 z,b
-#define MATHS_SHIFT_LABEL_3 w,a
+#define MATHS_SHIFT_LABEL_0 x, r
+#define MATHS_SHIFT_LABEL_1 y, g
+#define MATHS_SHIFT_LABEL_2 z, b
+#define MATHS_SHIFT_LABEL_3 w, a
 
 #define MATHS_SHIFT_LABEL_00 xx, rr
 #define MATHS_SHIFT_LABEL_01 xy, rg

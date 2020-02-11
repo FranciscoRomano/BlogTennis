@@ -168,19 +168,19 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="ConsoleCanvas.h" />
     <ClInclude Include="CRenderer.h" />
+    <ClInclude Include="GL3D.Buffer.h" />
     <ClInclude Include="maths.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Win32.Console.h" />
-    <ClInclude Include="Win32.Framebuffer.h" />
+    <ClInclude Include="GL3D.Rasterizer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="ConsoleCanvas.cpp" />
     <ClCompile Include="CRenderer.cpp" />
+    <ClCompile Include="GL3D.Rasterizer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="main.test.cpp" />
     <ClCompile Include="Win32.Console.cpp" />
-    <ClCompile Include="Win32.Framebuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

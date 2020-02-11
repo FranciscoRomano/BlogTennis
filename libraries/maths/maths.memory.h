@@ -48,6 +48,10 @@ namespace maths {
             static T t; t = lhs; lhs = rhs; rhs = t;
         };
 
+        // [memory] swap memory
+        template<typename T> static inline void swp(T* lhs, T* rhs, const u64& cap)
+        { static T t; for (u64 i = 0; i < cap; i++) { t = lhs[i]; lhs[i] = rhs[i]; rhs[i] = t; } };
+
         // [memory] release memory
         template<typename T> static inline void del(T* ref, const u64& cap)
         {

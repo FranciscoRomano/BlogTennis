@@ -1,5 +1,6 @@
 /** Dependencies **********************************************************************************/
 
+#include <cmath>
 #include "Win32.Console.h"
 
 /** Declarations **********************************************************************************/
@@ -65,6 +66,49 @@ void Win32::Console::background(const UINT& index, const CHAR& value)
     Win32::SetConsoleBufferBackground(&buffer, index, value);
 };
 
+void Win32::Console::blitRGB(const FLOAT* buffer, const UINT& length)
+{
+    static UINT idx;
+    static FLOAT r, g, b;
+    
+    // reset defaults
+    idx = 0;
+
+    // iterate through buffer
+    for (UINT i = 0; i < length; i++)
+    {
+        // get rgb
+        r = buffer[idx++];
+        g = buffer[idx++];
+        b = buffer[idx++];
+
+        // set pixel from RGB
+        pixel(i, r, g, b);
+    }
+};
+
+void Win32::Console::blitRGBA(const FLOAT* buffer, const UINT& length)
+{
+    static UINT idx;
+    static FLOAT r, g, b, a;
+
+    // reset defaults
+    idx = 0;
+
+    // iterate through buffer
+    for (UINT i = 0; i < length; i++)
+    {
+        // get rgba
+        r = buffer[idx++];
+        g = buffer[idx++];
+        b = buffer[idx++];
+        a = buffer[idx++];
+
+        // set pixel from RGBA
+        pixel(i, r * a, g * a, b * a);
+    }
+};
+
 void Win32::Console::bind(const Win32::PFN_ConsoleFocusEvent& callback)
 {
     // bind console instance focus callback
@@ -113,10 +157,35 @@ void Win32::Console::characterW(const UINT& index, const WCHAR& value)
     Win32::SetConsoleBufferCharacterW(&buffer, index, value);
 };
 
+void Win32::Console::characterInfo(const UINT& index, const CHAR_INFO& value)
+{
+    // set console buffer character information
+    Win32::SetConsoleBufferCharacterInfo(&buffer, index, value);
+};
+
 void Win32::Console::foreground(const UINT& index, const CHAR& value)
 {
     // set console buffer foreground
     Win32::SetConsoleBufferForeground(&buffer, index, value);
+};
+
+void Win32::Console::pixel(const UINT& index, const FLOAT& r, const FLOAT& g, const FLOAT& b)
+{
+    static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
+    static float length = float(sizeof(ascii) - 1) + 0.015f;
+
+    // calculate luminance (HSP Color Model)
+    float l = sqrtf(0.299f * powf(r, 2) + 0.587f * powf(g, 2) + 0.114f * powf(b, 2));
+
+    // calculate color
+    WORD color = 0;
+    if (l > 0.666f) color |= 0x88; else if (l > 0.333f) color |= 0x8;
+    if (r > 0.666f) color |= 0x44; else if (r > 0.333f) color |= 0x4;
+    if (g > 0.666f) color |= 0x22; else if (g > 0.333f) color |= 0x2;
+    if (b > 0.666f) color |= 0x11; else if (b > 0.333f) color |= 0x1;
+
+    // set char info
+    buffer.pCharInfo[index] = { (WCHAR)ascii[int(l * length)], color };
 };
 
 void Win32::Console::readA()
@@ -135,20 +204,6 @@ void Win32::Console::region(const SMALL_RECT& region)
 {
     // set console write region
     writeRegion = region;
-};
-
-void Win32::Console::size(const SHORT& width, const SHORT& height)
-{
-    // resize console buffer
-    Win32::FreeConsoleBuffer(&buffer);
-    Win32::AllocConsoleBuffer({ width, height }, &buffer);
-
-    // set console screen buffer info
-    properties.screenBufferInfoEx.dwSize = { (SHORT)width, (SHORT)height };
-    properties.screenBufferInfoEx.srWindow = { 0, 0, (SHORT)width, (SHORT)height };
-    properties.screenBufferInfoEx.dwCursorPosition = { 0, 0 };
-    properties.screenBufferInfoEx.dwMaximumWindowSize = { (SHORT)width, (SHORT)height };
-    Win32::SetConsolePropertyScreenBufferInfo(&instance, &properties);
 };
 
 void Win32::Console::writeA()

@@ -44,7 +44,7 @@ WINCALL void WINAPI Win32::SetConsoleBufferCharacterW(ConsoleBuffer* buffer, con
     buffer->pCharInfo[index].Char.UnicodeChar = value;
 }
 
-WINCALL void WINAPI Win32::SetConsoleBufferCharInfo(ConsoleBuffer* buffer, const UINT& index, const CHAR_INFO& value)
+WINCALL void WINAPI Win32::SetConsoleBufferCharacterInfo(ConsoleBuffer* buffer, const UINT& index, const CHAR_INFO& value)
 {
     // set char buffer data
     buffer->pCharInfo[index] = value;

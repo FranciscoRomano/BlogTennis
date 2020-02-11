@@ -47,11 +47,11 @@ namespace Win32 {
     /// <param name="value"> data value </param>
     WINCALL void WINAPI SetConsoleBufferCharacterW(ConsoleBuffer* buffer, const UINT& index, const WCHAR& value);
 
-    /// <summary> [win32] set console buffer character & attributes </summary>
+    /// <summary> [win32] set console buffer character and attributes </summary>
     /// <param name="buffer"> buffer pointer </param>
     /// <param name="index"> data index </param>
     /// <param name="value"> data value </param>
-    WINCALL void WINAPI SetConsoleBufferCharInfo(ConsoleBuffer* buffer, const UINT& index, const CHAR_INFO& value);
+    WINCALL void WINAPI SetConsoleBufferCharacterInfo(ConsoleBuffer* buffer, const UINT& index, const CHAR_INFO& value);
 
     /// <summary> [win32] set console buffer foreground (color) </summary>
     /// <param name="buffer"> buffer pointer </param>
