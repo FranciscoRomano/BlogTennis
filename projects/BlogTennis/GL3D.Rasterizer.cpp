@@ -2,14 +2,16 @@
 
 #include "GL3D.Rasterizer.h"
 
-const GL3D::Rasterizer::vertex dx(const GL3D::Rasterizer::vertex& a, const GL3D::Rasterizer::vertex& b, const float& t)
+const void dx(const GL3D::Rasterizer::vertex& a, const GL3D::Rasterizer::vertex& b, const float& t, GL3D::Rasterizer::vertex& c)
 {
-    return { a.point + (b.point - a.point) / t, a.color + (b.color - a.color) / t };
+    c.point = a.point + (b.point - a.point) / t;
+    c.color = a.color + (b.color - a.color) / t;
 };
 
-const GL3D::Rasterizer::vertex lerp(const GL3D::Rasterizer::vertex& a, const GL3D::Rasterizer::vertex& b, const float& t)
+const void lerp(const GL3D::Rasterizer::vertex& a, const GL3D::Rasterizer::vertex& b, const float& t, GL3D::Rasterizer::vertex& c)
 {
-    return { a.point + (b.point - a.point) * t, a.color + (b.color - a.color) * t };
+    c.point = a.point + (b.point - a.point) * t;
+    c.color = a.color + (b.color - a.color) * t;
 };
 
 /** Declarations **********************************************************************************/
@@ -117,13 +119,13 @@ void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& 
         d.y = b.y;
 
         float1 steps1 = fabs(a.y - b.y) + 1;
-        vertex dxBA = dx(b, a, steps1);
-        vertex dxDA = dx(d, a, steps1);
+        vertex dxBA{}; dx(b, a, steps1, dxBA);
+        vertex dxDA{}; dx(d, a, steps1, dxDA);
         triangle(b, d, dxBA, dxDA, steps1, 0);
 
         float1 steps2 = fabs(b.y - c.y) + 1;
-        vertex dxBC = dx(b, c, steps2);
-        vertex dxDC = dx(d, c, steps2);
+        vertex dxBC{}; dx(b, c, steps2, dxBC);
+        vertex dxDC{}; dx(d, c, steps2, dxDC);
         triangle(b, d, dxBC, dxDC, steps2, 1);
     }
 };
