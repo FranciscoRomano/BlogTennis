@@ -58,6 +58,7 @@ int main()
 
         for (unsigned int i = 0; i < length; i++)
         {
+            rasterizer.colorbuffer[i] = float3{};
             rasterizer.depthbuffer[i] = float1{ FLOAT_MAX };
         }
 
@@ -70,14 +71,14 @@ int main()
             float3 p3 = { float3{ range( 0, qw), range(hh, fh), 0 } };
 
             rasterizer.triangle(
-                GL3D::Rasterizer::vertex{ p1, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                GL3D::Rasterizer::vertex{ p2, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                GL3D::Rasterizer::vertex{ p3, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
+                GL3D::Vertex{ p1, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
+                GL3D::Vertex{ p2, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
+                GL3D::Vertex{ p3, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
             );
 
             console.blitRGB((FLOAT*)(float3*)rasterizer.colorbuffer, length);
             console.writeA();
-            Sleep(50);
+            Sleep(1000);
         }
 
     }

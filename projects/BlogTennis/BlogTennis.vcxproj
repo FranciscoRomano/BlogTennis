@@ -169,6 +169,7 @@
     <ClInclude Include="ConsoleCanvas.h" />
     <ClInclude Include="CRenderer.h" />
     <ClInclude Include="GL3D.Buffer.h" />
+    <ClInclude Include="GL3D.Vertex.h" />
     <ClInclude Include="maths.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Win32.Console.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ConsoleCanvas.cpp" />
     <ClCompile Include="CRenderer.cpp" />
     <ClCompile Include="GL3D.Rasterizer.cpp" />
+    <ClCompile Include="GL3D.Vertex.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Win32.Console.cpp" />
   </ItemGroup>

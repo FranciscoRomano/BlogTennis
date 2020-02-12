@@ -1,11 +1,26 @@
-/** Dependencies **********************************************************************************/
+/** Dependencies ********************************GL3D::Vertex**************************************************/
 
 #include "GL3D.Rasterizer.h"
 
-const void dx(const GL3D::Rasterizer::vertex& a, const GL3D::Rasterizer::vertex& b, const float& t, GL3D::Rasterizer::vertex& c)
+const void dx(const GL3D::Vertex& a, const GL3D::Vertex& b, const float& t, GL3D::Vertex& c)
 {
     c.point = (b.point - a.point) / t;
     c.color = (b.color - a.color) / t;
+};
+
+const float3 floor(const float3& a)
+{
+    return float3{ floorf(a.x), floorf(a.y), floorf(a.z) };
+};
+
+const float4 floor(const float4& a)
+{
+    return float4{ floorf(a.x), floorf(a.y), floorf(a.z), floorf(a.w) };
+};
+
+const GL3D::Vertex floor(const GL3D::Vertex& a)
+{
+    return GL3D::Vertex{ floor(a.point), a.color };
 };
 
 /** Declarations **********************************************************************************/
@@ -23,26 +38,20 @@ GL3D::Rasterizer::Rasterizer(const unsigned int& width, const unsigned int& heig
     fHeight = (float)height;
 };
 
-void GL3D::Rasterizer::line(const vertex& a, const vertex& b)
+void GL3D::Rasterizer::line(const Vertex& a, const Vertex& b)
 {
-    //(float&)a.x = roundf(a.x);
-    //(float&)a.y = roundf(a.y);
-    //(float&)a.z = roundf(a.z);
-    //(float&)b.x = roundf(b.x);
-    //(float&)b.y = roundf(b.y);
-    //(float&)b.z = roundf(b.z);
+    (Vertex&)a = floor(a);
+    (Vertex&)b = floor(b);
 
     // calculate delta
-    float3 dx_point = (b.point - a.point);
-    float4 dx_color = (b.color - a.color);
+    Vertex dx = b - a;
 
     // normalize deltas
-    float length = fmax(fabs(dx_point.x), fabs(dx_point.y));
-    dx_point /= length;
-    dx_color /= length;
+    float length = fmax(fabs(dx.x), fabs(dx.y));
+    dx /= length;
 
     // set initial points
-    vertex c{ a.point, a.color };
+    Vertex c{ a };
 
     // iterate through length
     for (float i = 0; i <= length; i++)
@@ -51,12 +60,11 @@ void GL3D::Rasterizer::line(const vertex& a, const vertex& b)
         point(c);
 
         // increment
-        c.point += dx_point;
-        c.color += dx_color;
+        c += dx;
     }
 };
 
-void GL3D::Rasterizer::point(const vertex& a)
+void GL3D::Rasterizer::point(const Vertex& a)
 {
     static unsigned int x, y, index;
 
@@ -81,8 +89,12 @@ void GL3D::Rasterizer::point(const vertex& a)
     }
 };
 
-void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& c)
+void GL3D::Rasterizer::triangle(const Vertex& a, const Vertex& b, const Vertex& c)
 {
+    (Vertex&)a = floor(a);
+    (Vertex&)b = floor(b);
+    (Vertex&)c = floor(c);
+
     // sort by y
     if (a.y > b.y) maths::memory::swp((float*)&a, (float*)&b, 7);
     if (b.y > c.y) maths::memory::swp((float*)&b, (float*)&c, 7);
@@ -93,8 +105,8 @@ void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& 
     {
         // calculate deltas
         float1 steps = fabs(a.y - c.y);
-        vertex dxAC{}; dx(a, c, steps, dxAC);
-        vertex dxBC{}; dx(b, c, steps, dxBC);
+        Vertex dxAC = (c - a) / steps;
+        Vertex dxBC = (c - b) / steps;
 
         // draw top flat triangle
         triangle(a, b, dxAC, dxBC, steps, 0);
@@ -104,8 +116,8 @@ void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& 
     {
         // calculate deltas
         float1 steps = fabs(a.y - c.y);
-        vertex dxBA{}; dx(b, a, steps, dxBA);
-        vertex dxCA{}; dx(c, a, steps, dxCA);
+        Vertex dxBA = (a - b) / steps;
+        Vertex dxCA = (a - c) / steps;
 
         // draw bottom flat triangle
         triangle(b, c, dxBA, dxCA, steps, 0);
@@ -114,35 +126,41 @@ void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& 
     {
         // calculate intersection point
         float1 delta = (b.y - a.y) / (c.y - a.y);
-        vertex d = { float3{ a.x + (c.x - a.x) * delta, b.y, a.z + (c.z - a.z) * delta }, a.color + (c.color - a.color) * delta, };
+        Vertex d = { float3{ a.x + (c.x - a.x) * delta, b.y, a.z + (c.z - a.z) * delta }, a.color + (c.color - a.color) * delta, };
 
         // draw flat bottom triangle
         float1 steps1 = fabs(a.y - b.y);
-        vertex dxBA{}; dx(b, a, steps1, dxBA);
-        vertex dxDA{}; dx(d, a, steps1, dxDA);
+        Vertex dxBA{}; dx(b, a, steps1, dxBA);
+        Vertex dxDA{}; dx(d, a, steps1, dxDA);
         triangle(b, d, dxBA, dxDA, steps1, 0);
 
-        // draw top flat triangle
-        float1 steps2 = fabs(b.y - c.y);
-        vertex dxBC{}; dx(b, c, steps2, dxBC);
-        vertex dxDC{}; dx(d, c, steps2, dxDC);
-        triangle(b, d, dxBC, dxDC, steps2, 1);
+        //// draw top flat triangle
+        //float1 steps2 = fabs(b.y - c.y);
+        //Vertex dxBC{}; dx(b, c, steps2, dxBC);
+        //Vertex dxDC{}; dx(d, c, steps2, dxDC);
+        //triangle(b, d, dxBC, dxDC, steps2, 1);
+
+
+
+
+        line({ a.point, float4{ 1,0,0,1 } }, { b.point, float4{ 1,0,0,1 } });
+        line({ b.point, float4{ 1,0,0,1 } }, { c.point, float4{ 1,0,0,1 } });
+        line({ c.point, float4{ 1,0,0,1 } }, { a.point, float4{ 1,0,0,1 } });
+        line({ b.point, float4{ 1,0,0,1 } }, { d.point, float4{ 1,0,0,1 } });
     }
 };
 
-void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& dxA, const vertex& dxB, const float1& steps, const float1& offset)
+void GL3D::Rasterizer::triangle(const Vertex& a, const Vertex& b, const Vertex& dxA, const Vertex& dxB, const float1& steps, const float1& offset)
 {
-    // initialize defaults
-    vertex a1 = { a.point, a.color };
-    vertex b1 = { b.point, b.color };
+    // initialize
+    Vertex a1 = { a };
+    Vertex b1 = { b };
 
     for (float1 i = 0; i < offset; i++)
     {
-        // update defaults
-        a1.color += dxA.color;
-        a1.point += dxA.point;
-        b1.color += dxB.color;
-        b1.point += dxB.point;
+        // update
+        a1 += dxA;
+        b1 += dxB;
     }
 
     // iterate through lines
@@ -151,11 +169,9 @@ void GL3D::Rasterizer::triangle(const vertex& a, const vertex& b, const vertex& 
         // draw line
         line(a1, b1);
 
-        // update defaults
-        a1.color += dxA.color;
-        a1.point += dxA.point;
-        b1.color += dxB.color;
-        b1.point += dxB.point;
+        // update
+        a1 += dxA;
+        b1 += dxB;
     }
 };
 

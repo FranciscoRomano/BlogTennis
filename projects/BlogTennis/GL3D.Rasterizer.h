@@ -2,6 +2,7 @@
 /** Dependencies **********************************************************************************/
 
 #include "maths.h"
+#include "GL3D.Vertex.h"
 #include "GL3D.Buffer.h"
 
 /** Declarations **********************************************************************************/
@@ -15,10 +16,6 @@ namespace GL3D {
         unsigned int iWidth;
         unsigned int iHeight;
     public:
-        struct vertex {
-            union { float3 point; struct { float x, y, z; }; };
-            union { float4 color; struct { float r, g, b, a; }; };
-        };
 
         Buffer<float1> alphabuffer;
         Buffer<float3> colorbuffer;
@@ -30,13 +27,13 @@ namespace GL3D {
         // constructor
         Rasterizer(const unsigned int& width, const unsigned int& height);
 
-        void line(const vertex& a, const vertex& b);
+        void line(const Vertex& a, const Vertex& b);
 
-        void point(const vertex& a);
+        void point(const Vertex& a);
 
-        void triangle(const vertex& a, const vertex& b, const vertex& c);
+        void triangle(const Vertex& a, const Vertex& b, const Vertex& c);
 
-        void triangle(const vertex& a, const vertex& b, const vertex& dxA, const vertex& dxB, const float1& steps, const float1& offset);
+        void triangle(const Vertex& a, const Vertex& b, const Vertex& dxA, const Vertex& dxB, const float1& steps, const float1& offset);
 
     }; // class Rasterizer
 
