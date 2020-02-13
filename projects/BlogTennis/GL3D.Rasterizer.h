@@ -11,29 +11,29 @@ namespace GL3D {
 
     class Rasterizer {
     protected:
-        float fWidth;
-        float fHeight;
-        unsigned int iWidth;
-        unsigned int iHeight;
+        uint1 u_width;
+        uint1 u_height;
+        uint1 u_length;
+        float1 f_width;
+        float1 f_height;
+        float1 f_length;
     public:
 
-        Buffer<float1> alphabuffer;
-        Buffer<float3> colorbuffer;
+        Buffer<float4> colorbuffer;
         Buffer<float1> depthbuffer;
 
-        // destructor
         virtual ~Rasterizer();
 
-        // constructor
         Rasterizer(const unsigned int& width, const unsigned int& height);
 
         void line(const Vertex& a, const Vertex& b);
+        void line_h(const Vertex& point, const float4& color_dx, const float1& depth_dx, const float1& length);
+        void line_v(const Vertex& point, const float4& color_dx, const float1& depth_dx, const float1& length);
 
         void point(const Vertex& a);
 
         void triangle(const Vertex& a, const Vertex& b, const Vertex& c);
-
-        void triangle(const Vertex& a, const Vertex& b, const Vertex& dxA, const Vertex& dxB, const float1& steps, const float1& offset);
+        void triangle_f(const Vertex& a1, const Vertex& a2, const Vertex& b);
 
     }; // class Rasterizer
 

@@ -10,9 +10,9 @@
 #define FLOAT_MAX 3.4028235E37
 #endif//FLOAT_MAX
 
-bool can_draw = false;
-const unsigned int width = 81;
-const unsigned int height = 81;
+bool can_draw = true;
+const unsigned int width = 61;
+const unsigned int height = 61;
 const unsigned int length = width * height;
 
 bool is_running = true;
@@ -42,8 +42,7 @@ int main()
     for (unsigned int i = 0; i < length; i++)
     {
         console[i] = {};
-        rasterizer.alphabuffer[i] = float{};
-        rasterizer.colorbuffer[i] = float3{};
+        rasterizer.colorbuffer[i] = float4{};
         rasterizer.depthbuffer[i] = (float)FLOAT_MAX;
     }
 
@@ -58,13 +57,30 @@ int main()
 
         for (unsigned int i = 0; i < length; i++)
         {
-            rasterizer.colorbuffer[i] = float3{};
+            //rasterizer.colorbuffer[i] = float4{};
             rasterizer.depthbuffer[i] = float1{ FLOAT_MAX };
         }
 
         if (can_draw)
         {
-            float x = range(0, width);
+            rasterizer.line(
+                GL3D::Vertex{ float3{ range(0, fw), range(0, hh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
+                GL3D::Vertex{ float3{ range(0, fw), range(hh, fh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
+            );
+
+            rasterizer.line_h(
+                GL3D::Vertex{ float3{ range(0, hw), range(0, fh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
+                float4{ 0, 0, 0, 0 },
+                float1{ 0 },
+                range(0, hw)
+            );
+
+            rasterizer.line_v(
+                GL3D::Vertex{ float3{ range(0, fw), range(0, hh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
+                float4{ 0, 0, 0, 0 },
+                float1{ 0 },
+                range(0, hh)
+            );
 
             float3 p1 = { float3{ range( 0, fw), range( 0, qh), 0 } };
             float3 p2 = { float3{ range(hw, fw), range(hh, fh), 0 } };
@@ -76,9 +92,9 @@ int main()
                 GL3D::Vertex{ p3, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
             );
 
-            console.blitRGB((FLOAT*)(float3*)rasterizer.colorbuffer, length);
+            console.blitRGBA((FLOAT*)(float4*)rasterizer.colorbuffer, length);
             console.writeA();
-            Sleep(1000);
+            Sleep(0);
         }
 
     }
