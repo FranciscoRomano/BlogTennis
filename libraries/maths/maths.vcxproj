@@ -20,19 +20,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths.h" />
-    <ClInclude Include="maths.memory.h" />
-    <ClInclude Include="maths.shift.h" />
-    <ClInclude Include="maths.shift1.h" />
-    <ClInclude Include="maths.shift2.h" />
-    <ClInclude Include="maths.shift3.h" />
-    <ClInclude Include="maths.shift4.h" />
-    <ClInclude Include="maths.vector.h" />
-    <ClInclude Include="maths.vector2.h" />
-    <ClInclude Include="maths.vector3.h" />
-    <ClInclude Include="maths.vector4.h" />
+    <ClInclude Include="primitives\core\matrix.h" />
+    <ClInclude Include="old\maths.memory.h" />
+    <ClInclude Include="primitives\core\shift1.h" />
+    <ClInclude Include="primitives\core\shift2.h" />
+    <ClInclude Include="primitives\core\shift3.h" />
+    <ClInclude Include="primitives\core\shift4.h" />
+    <ClInclude Include="primitives\maths.shift.h" />
+    <ClInclude Include="primitives\core\vector.h" />
     <ClInclude Include="old\mat.h" />
     <ClInclude Include="old\maths-aie.h" />
     <ClInclude Include="old\maths.h" />
+    <ClInclude Include="primitives\matrix2x2.h" />
+    <ClInclude Include="primitives\matrix2x3.h" />
+    <ClInclude Include="primitives\matrix2x4.h" />
+    <ClInclude Include="primitives\matrix3x2.h" />
+    <ClInclude Include="primitives\matrix3x3.h" />
+    <ClInclude Include="primitives\matrix3x4.h" />
+    <ClInclude Include="primitives\matrix4x2.h" />
+    <ClInclude Include="primitives\matrix4x3.h" />
+    <ClInclude Include="primitives\matrix4x4.h" />
+    <ClInclude Include="primitives\vector2.h" />
+    <ClInclude Include="primitives\vector3.h" />
+    <ClInclude Include="primitives\vector4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="old\maths-core.cpp" />

@@ -10,7 +10,6 @@
 #define FLOAT_MAX 3.4028235E37
 #endif//FLOAT_MAX
 
-bool can_draw = true;
 const unsigned int width = 61;
 const unsigned int height = 61;
 const unsigned int length = width * height;
@@ -29,12 +28,6 @@ float range(float a, float b)
     return a + (b - a) * t;
 }
 
-void on_key_event(KEY_EVENT_RECORD e)
-{
-    if (e.bKeyDown == TRUE && e.wVirtualKeyCode == VK_RETURN)
-        can_draw = !can_draw;
-}
-
 int main()
 {
     UINT size = sizeof(float3);
@@ -46,57 +39,47 @@ int main()
         rasterizer.depthbuffer[i] = (float)FLOAT_MAX;
     }
 
-    console.bind(on_key_event);
-
+    float delta = 0.0f;
     float fw = (width - 1), hw = fw / 2.0f, qw = hw / 2.0f;
     float fh = (height - 1), hh = fh / 2.0f, qh = hh / 2.0f;
 
+    float4x4 transform = maths::rotate(float3{ 0, 1, 0 }, delta);
+
     while (is_running)
     {
-        console.readA();
-
         for (unsigned int i = 0; i < length; i++)
         {
-            //rasterizer.colorbuffer[i] = float4{};
+            rasterizer.colorbuffer[i] = float4{};
             rasterizer.depthbuffer[i] = float1{ FLOAT_MAX };
         }
 
-        if (can_draw)
-        {
-            rasterizer.line(
-                GL3D::Vertex{ float3{ range(0, fw), range(0, hh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                GL3D::Vertex{ float3{ range(0, fw), range(hh, fh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
-            );
+        float x = sinf(delta) * 0.5f;
+        float y = cosf(delta) * 0.5f;
+        
+        float4 p1 = maths::translate(float3{ x, y, 0 }) * transform * float4 { -0.5f, 0.5f, 0.0f, 1.0f };
+        float4 p2 = maths::translate(float3{ x, y, 0 }) * transform * float4 { 0.0f, -0.5f, 0.0f, 1.0f };
+        float4 p3 = maths::translate(float3{ x, y, 0 }) * transform * float4{  0.5f, 0.5f, 0.0f, 1.0f };
 
-            rasterizer.line_h(
-                GL3D::Vertex{ float3{ range(0, hw), range(0, fh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                float4{ 0, 0, 0, 0 },
-                float1{ 0 },
-                range(0, hw)
-            );
+        p1.xy = (p1.xy / 2.0f + 0.5f) * float2{ fw, fh };
+        p2.xy = (p2.xy / 2.0f + 0.5f) * float2{ fw, fh };
+        p3.xy = (p3.xy / 2.0f + 0.5f) * float2{ fw, fh };
 
-            rasterizer.line_v(
-                GL3D::Vertex{ float3{ range(0, fw), range(0, hh), 0 }, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                float4{ 0, 0, 0, 0 },
-                float1{ 0 },
-                range(0, hh)
-            );
+        p1.xyz = p1.xyz / (float)p1.w;
+        p2.xyz = p2.xyz / (float)p2.w;
+        p3.xyz = p3.xyz / (float)p3.w;
 
-            float3 p1 = { float3{ range( 0, fw), range( 0, qh), 0 } };
-            float3 p2 = { float3{ range(hw, fw), range(hh, fh), 0 } };
-            float3 p3 = { float3{ range( 0, qw), range(hh, fh), 0 } };
+        rasterizer.triangle(
+            GL3D::Vertex{ p1.xyz, float4{ 1, 0, 0, 1 } },
+            GL3D::Vertex{ p2.xyz, float4{ 0, 1, 0, 1 } },
+            GL3D::Vertex{ p3.xyz, float4{ 0, 0, 1, 1 } }
+        );
 
-            rasterizer.triangle(
-                GL3D::Vertex{ p1, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                GL3D::Vertex{ p2, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } },
-                GL3D::Vertex{ p3, float4{ range(0, 1), range(0, 1), range(0, 1), 1 } }
-            );
+        transform = maths::rotate(float3{ 0, 1, 0 }, delta);
+        delta += 0.01f;
 
-            console.blitRGBA((FLOAT*)(float4*)rasterizer.colorbuffer, length);
-            console.writeA();
-            Sleep(0);
-        }
-
+        console.blitRGBA((FLOAT*)(float4*)rasterizer.colorbuffer, length);
+        console.writeA();
+        Sleep(0);
     }
 }
 

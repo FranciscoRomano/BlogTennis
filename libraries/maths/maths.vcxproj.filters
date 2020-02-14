@@ -21,36 +21,6 @@
     <ClInclude Include="maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="maths.memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.shift.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.shift1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.shift2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.shift3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.shift4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.vector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.vector3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maths.vector4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="old\maths-aie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,6 +28,66 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="old\mat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="old\maths.memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix2x2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix2x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix2x4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix3x2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix3x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix3x4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix4x2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix4x3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\matrix4x4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\vector4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\shift1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\shift2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\shift3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\core\shift4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\maths.shift.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

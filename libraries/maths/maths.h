@@ -1,16 +1,18 @@
 #pragma once
 /** Dependencies **********************************************************************************/
 
-#include "maths.memory.h"
-#include "maths.shift.h"
-#include "maths.shift1.h"
-#include "maths.shift2.h"
-#include "maths.shift3.h"
-#include "maths.shift4.h"
-#include "maths.vector.h"
-#include "maths.vector2.h"
-#include "maths.vector3.h"
-#include "maths.vector4.h"
+#include "primitives/core/matrix.h"
+#include "primitives/core/shift1.h"
+#include "primitives/core/shift2.h"
+#include "primitives/core/shift3.h"
+#include "primitives/core/shift4.h"
+#include "primitives/core/vector.h"
+
+#include "primitives/maths.shift.h"
+#include "primitives/vector2.h"
+#include "primitives/vector3.h"
+#include "primitives/vector4.h"
+
 
 typedef float float1;
 typedef signed int int1;
@@ -96,6 +98,252 @@ namespace maths {
     {
         return a / length(a);
     };
+
+
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator+(const T& a, const vector<T, S>& b) { vector<T, S> t{ a }; t += b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator-(const T& a, const vector<T, S>& b) { vector<T, S> t{ a }; t -= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator*(const T& a, const vector<T, S>& b) { vector<T, S> t{ a }; t *= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator/(const T& a, const vector<T, S>& b) { vector<T, S> t{ a }; t /= b; return t; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator+(const vector<T, S>& a, const T& b) { vector<T, S> t{ a }; t += b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator-(const vector<T, S>& a, const T& b) { vector<T, S> t{ a }; t -= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator*(const vector<T, S>& a, const T& b) { vector<T, S> t{ a }; t *= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator/(const vector<T, S>& a, const T& b) { vector<T, S> t{ a }; t /= b; return t; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator+(const vector<T, S>& a, const vector<T, S>& b) { vector<T, S> t{ a }; t += b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator-(const vector<T, S>& a, const vector<T, S>& b) { vector<T, S> t{ a }; t -= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator*(const vector<T, S>& a, const vector<T, S>& b) { vector<T, S> t{ a }; t *= b; return t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> operator/(const vector<T, S>& a, const vector<T, S>& b) { vector<T, S> t{ a }; t /= b; return t; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator+=(vector<T, S>& a, const T& b) { for (unsigned int i = 0; i < S; i++) a[i] += b; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator-=(vector<T, S>& a, const T& b) { for (unsigned int i = 0; i < S; i++) a[i] -= b; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator*=(vector<T, S>& a, const T& b) { for (unsigned int i = 0; i < S; i++) a[i] *= b; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator/=(vector<T, S>& a, const T& b) { for (unsigned int i = 0; i < S; i++) a[i] /= b; return a; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator+=(vector<T, S>& a, const vector<T, S>& b) { for (unsigned int i = 0; i < S; i++) a[i] += b[i]; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator-=(vector<T, S>& a, const vector<T, S>& b) { for (unsigned int i = 0; i < S; i++) a[i] -= b[i]; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator*=(vector<T, S>& a, const vector<T, S>& b) { for (unsigned int i = 0; i < S; i++) a[i] *= b[i]; return a; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S>& operator/=(vector<T, S>& a, const vector<T, S>& b) { for (unsigned int i = 0; i < S; i++) a[i] /= b[i]; return a; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int S>
+    const bool operator<(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] < b[i] && i < S; i++); return i == S; };
+
+    template<typename T, unsigned int S>
+    const bool operator>(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] > b[i] && i < S; i++); return i == S; };
+
+    template<typename T, unsigned int S>
+    const bool operator==(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] == b[i] && i < S; i++); return i == S; };
+
+    template<typename T, unsigned int S>
+    const bool operator!=(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] != b[i] && i < S; i++); return i == S; };
+
+    template<typename T, unsigned int S>
+    const bool operator<=(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] <= b[i] && i < S; i++); return i == S; };
+
+    template<typename T, unsigned int S>
+    const bool operator>=(const vector<T, S>& a, const vector<T, S>& b) { unsigned int i = 0; for (unsigned int i = 0; a[i] >= b[i] && i < S; i++); return i == S; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int A1>
+    const T operator+(const shift1<T, A1>& a, const T& b) { return a[A1] + b; };
+
+    template<typename T, unsigned int B1>
+    const T operator+(const T& a, const shift1<T, B1>& b) { return a + b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator+(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] + b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const T operator-(const shift1<T, A1>& a, const T& b) { return a[A1] - b; };
+
+    template<typename T, unsigned int B1>
+    const T operator-(const T& a, const shift1<T, B1>& b) { return a - b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator-(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] - b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const T operator*(const shift1<T, A1>& a, const T& b) { return a[A1] * b; };
+
+    template<typename T, unsigned int B1>
+    const T operator*(const T& a, const shift1<T, B1>& b) { return a * b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator*(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] * b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const T operator/(const shift1<T, A1>& a, const T& b) { return a[A1] / b; };
+
+    template<typename T, unsigned int B1>
+    const T operator/(const T& a, const shift1<T, B1>& b) { return a / b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator/(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] / b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator<(const shift1<T, A1>& a, const T& b) { return a[A1] < b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator<(const T& a, const shift1<T, B1>& b) { return a < b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator<(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] < b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator>(const shift1<T, A1>& a, const T& b) { return a[A1] > b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator>(const T& a, const shift1<T, B1>& b) { return a > b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator>(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] > b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator==(const shift1<T, A1>& a, const T& b) { return a[A1] == b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator==(const T& a, const shift1<T, B1>& b) { return a == b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator==(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] == b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator!=(const shift1<T, A1>& a, const T& b) { return a[A1] != b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator!=(const T& a, const shift1<T, B1>& b) { return a != b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator!=(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] != b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator<=(const shift1<T, A1>& a, const T& b) { return a[A1] <= b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator<=(const T& a, const shift1<T, B1>& b) { return a <= b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator<=(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] <= b[B1]; };
+
+    template<typename T, unsigned int A1>
+    const bool operator>=(const shift1<T, A1>& a, const T& b) { return a[A1] >= b; };
+
+    template<typename T, unsigned int B1>
+    const bool operator>=(const T& a, const shift1<T, B1>& b) { return a >= b[B1]; };
+
+    template<typename T, unsigned int A1, unsigned int B1>
+    const bool operator>=(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] >= b[B1]; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int A1, unsigned int A2>
+    const vector<T, 2> operator+(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] + b, a[A2] + b }; };
+    template<typename T, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator+(const T& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a + b[B1], a + b[B2] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator+(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] + b[B1], a[A2] + b[B2] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2>
+    const vector<T, 2> operator-(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] - b, a[A2] - b }; };
+    template<typename T, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator-(const T& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a - b[B1], a - b[B2] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator-(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] - b[B1], a[A2] - b[B2] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2>
+    const vector<T, 2> operator*(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] * b, a[A2] * b }; };
+    template<typename T, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator*(const T& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a * b[B1], a * b[B2] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator*(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] * b[B1], a[A2] * b[B2] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2>
+    const vector<T, 2> operator/(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] / b, a[A2] / b }; };
+    template<typename T, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator/(const T& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a / b[B1], a / b[B2] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
+    const vector<T, 2> operator/(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] / b[B1], a[A2] / b[B2] }; };
+
+    //----------------------------------------------//
+
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3>
+    const vector<T, 3> operator+(const shift3<T, A1, A2, A3>& a, const T& b) { return vector<T, 3>{ a[A1] + b, a[A2] + b, a[A3] + b }; };
+    template<typename T, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator+(const T& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a + b[B1], a + b[B2], a + b[B3] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator+(const shift3<T, A1, A2, A3>& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a[A1] + b[B1], a[A2] + b[B2], a[A3] + b[B3] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3>
+    const vector<T, 3> operator-(const shift3<T, A1, A2, A3>& a, const T& b) { return vector<T, 3>{ a[A1] - b, a[A2] - b, a[A3] - b }; };
+    template<typename T, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator-(const T& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a - b[B1], a - b[B2], a - b[B3] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator-(const shift3<T, A1, A2, A3>& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a[A1] - b[B1], a[A2] - b[B2], a[A3] - b[B3] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3>
+    const vector<T, 3> operator*(const shift3<T, A1, A2, A3>& a, const T& b) { return vector<T, 3>{ a[A1] * b, a[A2] * b, a[A3] * b }; };
+    template<typename T, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator*(const T& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a * b[B1], a * b[B2], a * b[B3] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator*(const shift3<T, A1, A2, A3>& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a[A1] * b[B1], a[A2] * b[B2], a[A3] * b[B3] }; };
+
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3>
+    const vector<T, 3> operator/(const shift3<T, A1, A2, A3>& a, const T& b) { return vector<T, 3>{ a[A1] / b, a[A2] / b, a[A3] / b }; };
+    template<typename T, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator/(const T& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a / b[B1], a / b[B2], a / b[B3] }; };
+    template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int B1, unsigned int B2, unsigned int B3>
+    const vector<T, 3> operator/(const shift3<T, A1, A2, A3>& a, const shift3<T, B1, B2, B3>& b) { return vector<T, 3>{ a[A1] / b[B1], a[A2] / b[B2], a[A3] / b[B3] }; };
+
+    //----------------------------------------------//
 
 }; // namespace maths
 

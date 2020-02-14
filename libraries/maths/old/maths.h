@@ -44,19 +44,8 @@ namespace maths {
     };
     // ** Method Declarations ************************
 
-        // maths :: core methods
-        //float dot(const float2 & v1, const float2 & v2);
-        //float dot(const float3 & v1, const float3 & v2);
-        //float dot(const float4 & v1, const float4 & v2);
-        //float length(const float2 & vec);
-        //float length(const float3 & vec);
-        //float length(const float4 & vec);
     mat4 scale(const float3& vec);
-    //float3 cross(const float3 & v1, const float3 & v2);
     mat4 rotate(const float3& vec, float angle);
-    //float2 normalize(const float2 & vec);
-    //float3 normalize(const float3 & vec);
-    //float4 normalize(const float4 & vec);
     mat4 translate(const float3& vec);
     mat4 perspective(float fov, float ar, float near, float far);
 

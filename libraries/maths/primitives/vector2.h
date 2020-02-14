@@ -1,10 +1,7 @@
 #pragma once
 
-#include "maths.vector.h"
-#include "maths.shift1.h"
-#include "maths.shift2.h"
-#include "maths.shift3.h"
-#include "maths.shift4.h"
+#include "core/vector.h"
+#include "maths.shift.h"
 
 namespace maths {
 

@@ -185,7 +185,7 @@ void Win32::Console::pixel(const UINT& index, const FLOAT& r, const FLOAT& g, co
     if (b > 0.666f) color |= 0x11; else if (b > 0.333f) color |= 0x1;
 
     // set char info
-    buffer.pCharInfo[index] = { (WCHAR)ascii[int(l * length)], color };
+    buffer.pCharInfo[index] = { (WCHAR)ascii[max(int(l * length), 0)], color };
 };
 
 void Win32::Console::readA()

@@ -1,10 +1,7 @@
 #pragma once
 
-#include "maths.vector.h"
-#include "maths.shift1.h"
-#include "maths.shift2.h"
-#include "maths.shift3.h"
-#include "maths.shift4.h"
+#include "core/vector.h"
+#include "maths.shift.h"
 
 namespace maths {
 
@@ -116,7 +113,7 @@ namespace maths {
             data[2] = a[A3];
             data[3] = b;
         };
-        
+
         template<unsigned int A1, unsigned int A2>
         vector(const shift2<T, A1, A2>& a, const T& b, const T& c) {
             data[0] = a[A1];
@@ -132,7 +129,7 @@ namespace maths {
             data[2] = c[C1];
             data[3] = c[C2];
         };
-        
+
         template<unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
         vector(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) {
             data[0] = a[A1];
