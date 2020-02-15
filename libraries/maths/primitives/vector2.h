@@ -1,7 +1,6 @@
 #pragma once
 
-#include "core/vector.h"
-#include "maths.shift.h"
+#include "core.h"
 
 namespace maths {
 
@@ -18,12 +17,14 @@ namespace maths {
 
         vector()
         {
-            data[0] = data[1] = T{};
+            data[0] = T{};
+            data[1] = T{};
         };
 
         vector(const T& a)
         {
-            data[0] = data[1] = a;
+            data[0] = a;
+            data[1] = a;
         };
 
         vector(const vector<T, 2>& a)
@@ -39,7 +40,8 @@ namespace maths {
 
         template<unsigned int A1>
         vector(const shift1<T, A1>& a) {
-            data[0] = data[1] = a[A1];
+            data[0] = a[A1];
+            data[1] = a[A1];
         };
 
         template<unsigned int A1, unsigned int A2>
@@ -57,7 +59,8 @@ namespace maths {
         };
 
         const vector<T, 2>& operator=(const T& a) {
-            data[0] = data[1] = a;
+            data[0] = a;
+            data[1] = a;
             return *this;
         };
 
@@ -69,7 +72,8 @@ namespace maths {
 
         template<unsigned int A1>
         const vector<T, 2>& operator=(const shift1<T, A1>& a) {
-            data[0] = data[1] = a[A1];
+            data[0] = a[A1];
+            data[1] = a[A1];
             return *this;
         };
 

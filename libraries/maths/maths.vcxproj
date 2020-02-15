@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths.h" />
+    <ClInclude Include="primitives\core.h" />
     <ClInclude Include="primitives\core\matrix.h" />
     <ClInclude Include="old\maths.memory.h" />
     <ClInclude Include="primitives\core\shift1.h" />

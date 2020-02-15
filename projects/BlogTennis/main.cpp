@@ -6,6 +6,10 @@
 #include "Win32.Console.h"
 #include "GL3D.Rasterizer.h"
 
+#include <maths/primitives/matrix2x2.h>
+#include <maths/primitives/matrix2x3.h>
+#include <maths/primitives/matrix3x2.h>
+
 #ifndef FLOAT_MAX
 #define FLOAT_MAX 3.4028235E37
 #endif//FLOAT_MAX
@@ -31,6 +35,15 @@ float range(float a, float b)
 int main()
 {
     UINT size = sizeof(float3);
+
+    float2x2 m{ 1, 2, 3, 4 };
+    auto s = sizeof(m);
+
+    float2 r1 = m.rows[0];
+    float2 r2 = m.rows[1];
+
+    float2 c1 = m.cols[0];
+    float2 c2 = m.cols[1];
 
     for (unsigned int i = 0; i < length; i++)
     {

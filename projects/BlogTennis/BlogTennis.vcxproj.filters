@@ -65,13 +65,13 @@
     <ClCompile Include="CMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GL3D.Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GL3D.Vertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

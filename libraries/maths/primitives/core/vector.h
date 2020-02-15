@@ -22,7 +22,7 @@ namespace maths {
 
         /// <summary> create vector </summary>
         /// <param name="a"> vector </param>
-        vector(const vector& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; }
+        vector(const vector& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; };
 
         /// <summary> cast to pointer </summary>
         /// <returns> pointer </returns>
@@ -35,17 +35,17 @@ namespace maths {
         /// <summary> assign to vector </summary>
         /// <param name="a"> value </param>
         /// <returns> vector </returns>
-        const vector& operator=(const T& a) { for (unsigned int i = 0; i < S; i++) data[i] = a; return *this; }
+        const vector& operator=(const T& a) { for (unsigned int i = 0; i < S; i++) data[i] = a; return *this; };
 
         /// <summary> assign to vector </summary>
         /// <param name="a"> array </param>
         /// <returns> vector </returns>
-        const vector& operator=(const T(&a)[S]) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; return *this; }
+        const vector& operator=(const T(&a)[S]) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; return *this; };
 
         /// <summary> assign to vector </summary>
         /// <param name="a"> vector </param>
         /// <returns> vector </returns>
-        const vector& operator=(const vector& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; return *this; }
+        const vector& operator=(const vector& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; return *this; };
 
     }; // class vector
 
