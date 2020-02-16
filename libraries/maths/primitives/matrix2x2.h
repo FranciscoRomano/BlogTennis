@@ -3,35 +3,48 @@
 
 namespace maths {
 
-    /// <summary> maths :: dynamic matrix class </summary>
+    /// <summary> maths :: matrix 2 x 2 class </summary>
     template<typename T> class matrix<T, 2, 2> {
     public:
         static const unsigned int C = 2;
         static const unsigned int R = 2;
-        static const unsigned int S = C * R;
+        static const unsigned int S = 2 * 2;
+        typedef vector<T, C> vector_r;
 
-        /// <summary> matrix data </summary>
-        union {
-            T data[S];
-            vector<T, C> rows[R];
-            shift2<T, 0, 2> cols[C];
+        /// <summary> matrix values </summary>
+        union { T data[S]; vector_r rows[R]; };
+
+        /// <summary> create matrix </summary>
+        matrix()
+        {
+            data[0] = 0; data[1] = 0;
+            data[2] = 0; data[3] = 0;
         };
 
         /// <summary> create matrix </summary>
-        matrix() { for (unsigned int i = 0; i < S; i++) data[i] = T{}; };
-
-        /// <summary> create matrix </summary>
         /// <param name="a"> value </param>
-        matrix(const T& a) { for (unsigned int i = 0; i < S; i++) data[i] = a; };
+        matrix(const T& a)
+        {
+            data[0] = a; data[1] = a;
+            data[2] = a; data[3] = a;
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> matrix </param>
-        matrix(const matrix& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; };
+        matrix(const matrix& a)
+        {
+            data[0] = a[0]; data[1] = a[1];
+            data[2] = a[2]; data[3] = a[3];
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> vector </param>
         /// <param name="b"> vector </param>
-        matrix(const vector<T, 2>& a, const vector<T, 2>& b) { rows[0] = a; rows[1] = b; };
+        matrix(const vector_r& a, const vector_r& b)
+        {
+            rows[0] = a;
+            rows[1] = b;
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> value </param>

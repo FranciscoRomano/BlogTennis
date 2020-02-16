@@ -12,21 +12,6 @@ void assert(const T* a, const T(&b)[S])
     if (i != S) throw "assert error";
 }
 
-//void assert<float, >(const float2& a, const float& x, const float& y)
-//{
-//    if (a[0] != x || a[1] != y) throw "float2 error!";
-//}
-//
-//void assert<float, >(const float3& a, const float& x, const float& y, const float& z)
-//{
-//    if (a[0] != x || a[1] != y || a[2] != z) throw "float3 error!";
-//}
-//
-//void assert<float, >(const float4& a, const float& x, const float& y, const float& z, const float& w)
-//{
-//    if (a[0] != x || a[1] != y || a[2] != z || a[3] != w) throw "float4 error!";
-//}
-
 void test_float2()
 {
     if (sizeof(float2) != (2 * 4)) throw "float2 :: invalid size!";
@@ -96,14 +81,11 @@ void test_float2x3()
     float2x3 c{ a };
     assert<float, 6>(c, { 0, 0, 0, 0, 0, 0 });
 
-    float2x3 d{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 } };
-    assert<float, 6>(d, { 1, 4, 2, 5, 3, 6 });
+    float2x3 d{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 } };
+    assert<float, 6>(d, { 1, 2, 3, 4, 5, 6 });
 
-    float2x3 e{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 } };
+    float2x3 e{ 1, 2, 3, 4, 5, 6 };
     assert<float, 6>(e, { 1, 2, 3, 4, 5, 6 });
-
-    float2x3 f{ 1, 2, 3, 4, 5, 6 };
-    assert<float, 6>(f, { 1, 2, 3, 4, 5, 6 });
 };
 
 void test_float2x4()
@@ -119,14 +101,11 @@ void test_float2x4()
     float2x4 c{ a };
     assert<float, 8>(c, { 0, 0, 0, 0, 0, 0, 0, 0 });
 
-    float2x4 d{ float4{ 1, 2, 3, 4 }, float4{ 5, 6, 7, 8 } };
-    assert<float, 8>(d, { 1, 5, 2, 6, 3, 7, 4, 8 });
+    float2x4 d{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 }, float2{ 7, 8 } };
+    assert<float, 8>(d, { 1, 2, 3, 4, 5, 6, 7, 8 });
 
-    float2x4 e{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 }, float2{ 7, 8 } };
+    float2x4 e{ 1, 2, 3, 4, 5, 6, 7, 8 };
     assert<float, 8>(e, { 1, 2, 3, 4, 5, 6, 7, 8 });
-
-    float2x4 f{ 1, 2, 3, 4, 5, 6, 7, 8 };
-    assert<float, 8>(f, { 1, 2, 3, 4, 5, 6, 7, 8 });
 }
 
 void test_float3()
@@ -190,11 +169,28 @@ void test_float3x2()
     float3x2 d{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 } };
     assert<float, 6>(d, { 1, 2, 3, 4, 5, 6 });
 
-    float3x2 e{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 } };
-    assert<float, 6>(e, { 1, 3, 5, 2, 4, 6 });
+    float3x2 e{ 1, 2, 3, 4, 5, 6 };
+    assert<float, 6>(e, { 1, 2, 3, 4, 5, 6 });
+};
 
-    float3x2 f{ 1, 2, 3, 4, 5, 6 };
-    assert<float, 6>(f, { 1, 2, 3, 4, 5, 6 });
+void test_float3x3()
+{
+    if (sizeof(float3x3) != (3 * 3 * 4)) throw "float3x3 :: invalid size!";
+
+    float3x3 a{};
+    assert<float, 9>(a, { 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+    float3x3 b{ 1 };
+    assert<float, 9>(b, { 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+
+    float3x3 c{ a };
+    assert<float, 9>(c, { 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+    float3x3 d{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 }, float3{ 7, 8, 9 } };
+    assert<float, 9>(d, { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+
+    float3x3 e{ 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    assert<float, 9>(e, { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 };
 
 void test_float3x4()
@@ -210,14 +206,11 @@ void test_float3x4()
     float3x4 c{ a };
     assert<float, 12>(c, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
 
-    float3x4 d{ float4{ 1, 2, 3, 4 }, float4{ 5, 6, 7, 8 }, float4{ 9, 10, 11, 12 } };
-    assert<float, 12>(d, { 1, 5, 9, 2, 6, 10, 3, 7, 11, 4, 8, 12 });
+    float3x4 d{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 }, float3{ 7, 8, 9 }, float3{ 10, 11, 12 } };
+    assert<float, 12>(d, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
 
-    float3x4 e{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 }, float3{ 7, 8, 9 }, float3{ 10, 11, 12 } };
+    float3x4 e{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
     assert<float, 12>(e, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
-
-    float3x4 f{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-    assert<float, 12>(f, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
 }
 
 void test_float4()
@@ -299,11 +292,8 @@ void test_float4x2()
     float4x2 d{ float4{ 1, 2, 3, 4 }, float4{ 5, 6, 7, 8 } };
     assert<float, 8>(d, { 1, 2, 3, 4, 5, 6, 7, 8 });
 
-    float4x2 e{ float2{ 1, 2 }, float2{ 3, 4 }, float2{ 5, 6 }, float2{ 7, 8 } };
-    assert<float, 8>(e, { 1, 3, 5, 7, 2, 4, 6, 8 });
-
-    float4x2 f{ 1, 2, 3, 4, 5, 6, 7, 8 };
-    assert<float, 8>(f, { 1, 2, 3, 4, 5, 6, 7, 8 });
+    float4x2 e{ 1, 2, 3, 4, 5, 6, 7, 8 };
+    assert<float, 8>(e, { 1, 2, 3, 4, 5, 6, 7, 8 });
 }
 
 void test_float4x3()
@@ -322,22 +312,32 @@ void test_float4x3()
     float4x3 d{ float4{ 1, 2, 3, 4 }, float4{ 5, 6, 7, 8 }, float4{ 9, 10, 11, 12 } };
     assert<float, 12>(d, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
 
-    float4x3 e{ float3{ 1, 2, 3 }, float3{ 4, 5, 6 }, float3{ 7, 8, 9 }, float3{ 10, 11, 12 } };
-    assert<float, 12>(e, { 1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12 });
+    float4x3 e{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+    assert<float, 12>(e, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+}
 
-    float4x3 f{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-    assert<float, 12>(f, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+void test_float4x4()
+{
+    if (sizeof(float4x4) != (4 * 4 * 4)) throw "float4x4 :: invalid size!";
+
+    float4x4 a{};
+    assert<float, 16>(a, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+    float4x4 b{ 1 };
+    assert<float, 16>(b, { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 });
+
+    float4x4 c{ a };
+    assert<float, 16>(c, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+
+    float4x4 d{ float4{ 1, 2, 3, 4 }, float4{ 5, 6, 7, 8 }, float4{ 9, 10, 11, 12 }, float4{ 13, 14, 15, 16 } };
+    assert<float, 16>(d, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
+
+    float4x4 e{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+    assert<float, 16>(e, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
 }
 
 int main()
 {
-    auto float2_size = sizeof(float2);
-    auto float2x2_size = sizeof(float2x2);
-    auto float2x3_size = sizeof(float2x3);
-    auto float3_size = sizeof(float3);
-    auto float3x2_size = sizeof(float3x2);
-    auto float4_size = sizeof(float4);
-
     test_float2();
     test_float2x2();
     test_float2x3();
@@ -345,11 +345,13 @@ int main()
     
     test_float3();
     test_float3x2();
+    test_float3x3();
     test_float3x4();
 
     test_float4();
     test_float4x2();
     test_float4x3();
+    test_float4x4();
 };
 
 /**************************************************************************************************/

@@ -21,16 +21,10 @@
     <ClInclude Include="maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old\maths-aie.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="old\maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="old\mat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="old\maths.memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="primitives\core\matrix.h">
@@ -87,23 +81,20 @@
     <ClInclude Include="primitives\core\shift4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\maths.shift.h">
+    <ClInclude Include="primitives\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\core.h">
+    <ClInclude Include="primitives\core\fields.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="old\maths.memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="old\maths-mat4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="old\maths-mat2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="old\maths-mat3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="old\maths-core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

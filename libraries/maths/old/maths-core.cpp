@@ -5,51 +5,64 @@
 
     maths::mat4 maths::scale(const float3 & v)
     {
-        mat4 result;
-        result[0] = float4(v.x, 0.0, 0.0, 0.0);
-        result[1] = float4(0.0, v.y, 0.0, 0.0);
-        result[2] = float4(0.0, 0.0, v.z, 0.0);
-        result[3] = float4(0.0, 0.0, 0.0, 1.0);
-        return result;
+        return float4x4{
+            v.x, 0.0, 0.0, 0.0,
+            0.0, v.y, 0.0, 0.0,
+            0.0, 0.0, v.z, 0.0,
+            0.0, 0.0, 0.0, 1.0
+        };
     }
     maths::mat4 maths::rotate(const float3 & axis, float angle)
     {
-        mat4 result(1);
-        float const a = angle;
-        float const c = cos(a);
-        float const s = sin(a);
+        float const c = cos(angle);
+        float const s = sin(angle);
         float3 temp((1 - c) * axis);
+
         // right vector
-        result[0][0] = c + temp[0] * axis[0];
-        result[0][1] = temp[0] * axis[1] + s * axis[2];
-        result[0][2] = temp[0] * axis[2] - s * axis[1];
+        float4 x_axis {
+            c + temp.x * axis.x,
+            temp.x * axis.y + s * axis.z,
+            temp.x * axis.z - s * axis.y,
+            0
+        };
+
         // up vector
-        result[1][0] = temp[1] * axis[0] - s * axis[2];
-        result[1][1] = c + temp[1] * axis[1];
-        result[1][2] = temp[1] * axis[2] + s * axis[0];
-        // foward vector
-        result[2][0] = temp[2] * axis[0] + s * axis[1];
-        result[2][1] = temp[2] * axis[1] - s * axis[0];
-        result[2][2] = c + temp[2] * axis[2];
-        return result;
+        float4 y_axis{
+            temp.y * axis.x - s * axis.z,
+            c + temp.y * axis.y,
+            temp.y * axis.z + s * axis.x,
+            0
+        };
+
+        // forward vector
+        float4 z_axis{
+            temp.z * axis.x + s * axis.y,
+            temp.z * axis.y - s * axis.x,
+            c + temp.z * axis.z,
+            0
+        };
+
+        return float4x4{ x_axis, y_axis, z_axis, float4{ 0, 0, 0, 1 } };
     }
     maths::mat4 maths::translate(const float3 & v)
     {
-        mat4 result(1);
-        result[3] = float4(v.x, v.y, v.z, 1.0);
-        return result;
+        return float4x4{
+            1.0, 0.0, 0.0, v.x,
+            0.0, 1.0, 0.0, v.y,
+            0.0, 0.0, 1.0, v.z,
+            0.0, 0.0, 0.0, 1.0
+        };
     }
-    maths::mat4 maths::perspective(float fov, float ar, float near, float far)
+    maths::mat4 maths::perspective(float fv, float ar, float zn, float zf)
     {
-        mat4 result;
-        float thFOV = std::tan(fov / 2);
-        float range = near - far;
-        result[0][0] = 1 / (thFOV * ar);
-        result[1][1] = 1 / thFOV;
-        result[2][2] = (-near - far) / range;
-        result[2][3] = 2 * far * near / range;
-        result[3][2] = -1;
-        return result;
+        float t = std::tan(fv / 2);
+        float r = zn - zf;
+        return float4x4{
+            1 / (t * ar),     0,              0,                 0,
+                       0, 1 / t,              0,                 0,
+                       0,     0, (-zn - zf) / r, (2 * zf * zn) / r,
+                       0,     0,              1,                 1,
+        };
     }
 
 // ***********************************************

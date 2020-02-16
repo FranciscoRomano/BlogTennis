@@ -26,6 +26,8 @@ namespace GL3D {
 
         Rasterizer(const unsigned int& width, const unsigned int& height);
 
+        void clear();
+
         void line(const Vertex& a, const Vertex& b);
         void line_h(const Vertex& point, const float4& color_dx, const float1& depth_dx, const float1& length);
         void line_v(const Vertex& point, const float4& color_dx, const float1& depth_dx, const float1& length);

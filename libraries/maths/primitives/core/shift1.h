@@ -1,4 +1,5 @@
 #pragma once
+#include "fields.h"
 
 namespace maths {
 
@@ -39,4 +40,67 @@ namespace maths {
 
     }; // class vector
 
+    template<typename T, unsigned int A1>
+    const T operator+(const shift1<T, A1>& a, const T& b) { return a[A1] + b; };
+    template<typename T, unsigned int B1>
+    const T operator+(const T& a, const shift1<T, B1>& b) { return a + b[B1]; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator+(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] + b[B1]; };
+    template<typename T, unsigned int A1>
+    const T& operator+=(const shift1<T, A1>& a, const T& b) { a[A1] += b; return a; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T& operator+=(const shift1<T, A1>& a, const shift1<T, B1>& b) { a[A1] += b[B1]; return a; };
+
+    template<typename T, unsigned int A1>
+    const T operator-(const shift1<T, A1>& a, const T& b) { return a[A1] - b; };
+    template<typename T, unsigned int B1>
+    const T operator-(const T& a, const shift1<T, B1>& b) { return a - b[B1]; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator-(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] - b[B1]; };
+    template<typename T, unsigned int A1>
+    const T& operator-=(const shift1<T, A1>& a, const T& b) { a[A1] -= b; return a; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T& operator-=(const shift1<T, A1>& a, const shift1<T, B1>& b) { a[A1] -= b[B1]; return a; };
+
+    template<typename T, unsigned int A1>
+    const T operator*(const shift1<T, A1>& a, const T& b) { return a[A1] * b; };
+    template<typename T, unsigned int B1>
+    const T operator*(const T& a, const shift1<T, B1>& b) { return a * b[B1]; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator*(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] * b[B1]; };
+    template<typename T, unsigned int A1>
+    const T& operator*=(const shift1<T, A1>& a, const T& b) { a[A1] *= b; return a; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T& operator*=(const shift1<T, A1>& a, const shift1<T, B1>& b) { a[A1] *= b[B1]; return a; };
+
+    template<typename T, unsigned int A1>
+    const T operator/(const shift1<T, A1>& a, const T& b) { return a[A1] / b; };
+    template<typename T, unsigned int B1>
+    const T operator/(const T& a, const shift1<T, B1>& b) { return a / b[B1]; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T operator/(const shift1<T, A1>& a, const shift1<T, B1>& b) { return a[A1] / b[B1]; };
+    template<typename T, unsigned int A1>
+    const T& operator/=(const shift1<T, A1>& a, const T& b) { a[A1] /= b; return a; };
+    template<typename T, unsigned int A1, unsigned int B1>
+    const T& operator/=(const shift1<T, A1>& a, const shift1<T, B1>& b) { a[A1] /= b[B1]; return a; };
+
+
+
 }; // namespace maths
+
+#define MATHS_SHIFT1_GEN1(T,A) maths::shift1<T, A> MATHS_FIELD_GEN1(A);
+
+#define MATHS_SHIFT1_GEN2(T)\
+        MATHS_SHIFT1_GEN1(T,0)\
+        MATHS_SHIFT1_GEN1(T,1)
+
+#define MATHS_SHIFT1_GEN3(T)\
+        MATHS_SHIFT1_GEN1(T,0)\
+        MATHS_SHIFT1_GEN1(T,1)\
+        MATHS_SHIFT1_GEN1(T,2)
+
+#define MATHS_SHIFT1_GEN4(T)\
+        MATHS_SHIFT1_GEN1(T,0)\
+        MATHS_SHIFT1_GEN1(T,1)\
+        MATHS_SHIFT1_GEN1(T,2)\
+        MATHS_SHIFT1_GEN1(T,3)

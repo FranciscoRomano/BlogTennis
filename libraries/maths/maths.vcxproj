@@ -20,17 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="maths.h" />
-    <ClInclude Include="primitives\core.h" />
-    <ClInclude Include="primitives\core\matrix.h" />
     <ClInclude Include="old\maths.memory.h" />
+    <ClInclude Include="primitives.h" />
+    <ClInclude Include="primitives\core.h" />
+    <ClInclude Include="primitives\core\fields.h" />
+    <ClInclude Include="primitives\core\matrix.h" />
     <ClInclude Include="primitives\core\shift1.h" />
     <ClInclude Include="primitives\core\shift2.h" />
     <ClInclude Include="primitives\core\shift3.h" />
     <ClInclude Include="primitives\core\shift4.h" />
-    <ClInclude Include="primitives\maths.shift.h" />
     <ClInclude Include="primitives\core\vector.h" />
     <ClInclude Include="old\mat.h" />
-    <ClInclude Include="old\maths-aie.h" />
     <ClInclude Include="old\maths.h" />
     <ClInclude Include="primitives\matrix2x2.h" />
     <ClInclude Include="primitives\matrix2x3.h" />
@@ -47,9 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="old\maths-core.cpp" />
-    <ClCompile Include="old\maths-mat2.cpp" />
-    <ClCompile Include="old\maths-mat3.cpp" />
-    <ClCompile Include="old\maths-mat4.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

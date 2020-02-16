@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/fields.h"
 #include "core/matrix.h"
 #include "core/shift1.h"
 #include "core/shift2.h"

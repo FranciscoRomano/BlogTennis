@@ -2,6 +2,10 @@
 
 #include "GL3D.Rasterizer.h"
 
+#ifndef FLOAT_MAX
+#define FLOAT_MAX 3.4028235E37
+#endif//FLOAT_MAX
+
 const void dx(const GL3D::Vertex& a, const GL3D::Vertex& b, const float& t, GL3D::Vertex& c)
 {
     c.point = (b.point - a.point) / t;
@@ -57,6 +61,15 @@ GL3D::Rasterizer::Rasterizer(const unsigned int& width, const unsigned int& heig
     f_width = (float)u_width;
     f_height = (float)u_height;
     f_length = (float)u_length;
+};
+
+void GL3D::Rasterizer::clear()
+{
+    for (unsigned int i = 0; i < u_length; i++)
+    {
+        colorbuffer[i] = float4{};
+        depthbuffer[i] = float1{ FLOAT_MAX };
+    }
 };
 
 // Line Algorithms
@@ -153,6 +166,8 @@ void GL3D::Rasterizer::line_v(const Vertex& point, const float4& color_dx, const
 
 void GL3D::Rasterizer::point(const Vertex& a)
 {
+    if (a.z < 0) return;
+
     uint1 x = uint1(a.x + 0.5f);
     uint1 y = uint1(a.y + 0.5f);
 

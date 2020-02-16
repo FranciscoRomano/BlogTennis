@@ -20,9 +20,9 @@
         for (unsigned int i = 0; i < mesh.indices.size(); i += 3)
         {
             // calculate vertex data
-            triangle.c1 = float4(mesh.vertices[mesh.indices[i + 0]], 1);
-            triangle.c2 = float4(mesh.vertices[mesh.indices[i + 1]], 1);
-            triangle.c3 = float4(mesh.vertices[mesh.indices[i + 2]], 1);
+            triangle.c1 = float4{ mesh.vertices[mesh.indices[i + 0]], 1 };
+            triangle.c2 = float4{ mesh.vertices[mesh.indices[i + 1]], 1 };
+            triangle.c3 = float4{ mesh.vertices[mesh.indices[i + 2]], 1 };
             triangle.v1 = matrix * triangle.c1;
             triangle.v2 = matrix * triangle.c2;
             triangle.v3 = matrix * triangle.c3;

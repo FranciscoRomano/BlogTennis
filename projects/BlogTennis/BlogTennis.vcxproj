@@ -181,7 +181,7 @@
     <ClCompile Include="CRenderer.cpp" />
     <ClCompile Include="GL3D.Rasterizer.cpp" />
     <ClCompile Include="GL3D.Vertex.cpp" />
-    <ClCompile Include="main.test.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Win32.Console.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,44 +3,58 @@
 
 namespace maths {
 
-    /// <summary> maths :: dynamic matrix class </summary>
+    /// <summary> maths :: matrix 2 x 4 class </summary>
     template<typename T> class matrix<T, 2, 4> {
     public:
         static const unsigned int C = 2;
         static const unsigned int R = 4;
         static const unsigned int S = C * R;
-        typedef vector<T, R> col;
-        typedef vector<T, C> row;
+        typedef vector<T, C> r_vector;
 
-        /// <summary> matrix data </summary>
-        union {
-            T data[S];
-            vector<T, C> rows[R];
-            shift4<T, 0, 2, 4, 6> cols[C];
+        /// <summary> matrix values </summary>
+        union { T data[S]; r_vector rows[R]; };
+
+        /// <summary> create matrix </summary>
+        matrix()
+        {
+            data[0] = 0; data[1] = 0;
+            data[2] = 0; data[3] = 0;
+            data[4] = 0; data[5] = 0;
+            data[6] = 0; data[7] = 0;
         };
 
         /// <summary> create matrix </summary>
-        matrix() { for (unsigned int i = 0; i < S; i++) data[i] = T{}; };
-
-        /// <summary> create matrix </summary>
         /// <param name="a"> value </param>
-        matrix(const T& a) { for (unsigned int i = 0; i < S; i++) data[i] = a; };
+        matrix(const T& a)
+        {
+            data[0] = a; data[1] = a;
+            data[2] = a; data[3] = a;
+            data[4] = a; data[5] = a;
+            data[6] = a; data[7] = a;
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> matrix </param>
-        matrix(const matrix& a) { for (unsigned int i = 0; i < S; i++) data[i] = a[i]; };
-
-        /// <summary> create matrix </summary>
-        /// <param name="a"> vector </param>
-        /// <param name="b"> vector </param>
-        matrix(const col& a, const col& b) { cols[0] = a; cols[1] = b; };
+        matrix(const matrix& a)
+        {
+            data[0] = a[0]; data[1] = a[1];
+            data[2] = a[2]; data[3] = a[3];
+            data[4] = a[4]; data[5] = a[5];
+            data[6] = a[6]; data[7] = a[7];
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> vector </param>
         /// <param name="b"> vector </param>
         /// <param name="c"> vector </param>
         /// <param name="d"> vector </param>
-        matrix(const row& a, const row& b, const row& c, const row& d) { rows[0] = a; rows[1] = b; rows[2] = c; rows[3] = d; };
+        matrix(const r_vector& a, const r_vector& b, const r_vector& c, const r_vector& d)
+        {
+            rows[0] = a;
+            rows[1] = b;
+            rows[2] = c;
+            rows[3] = d;
+        };
 
         /// <summary> create matrix </summary>
         /// <param name="a"> value </param>
