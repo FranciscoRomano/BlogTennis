@@ -171,14 +171,15 @@ void Win32::Console::foreground(const UINT& index, const CHAR& value)
 
 void Win32::Console::pixel(const UINT& index, const FLOAT& r, const FLOAT& g, const FLOAT& b)
 {
+    //static CHAR ascii[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
-    static float length = float(sizeof(ascii) - 1) + 0.015f;
+    static float length = float(sizeof(ascii)) + 0.015f;
 
     // calculate luminance (HSP Color Model)
     float l = sqrtf(0.299f * powf(r, 2) + 0.587f * powf(g, 2) + 0.114f * powf(b, 2));
 
     // calculate color
-    WORD color = 0;
+    WORD color = 0x0;
     if (l > 0.666f) color |= 0x88; else if (l > 0.333f) color |= 0x8;
     if (r > 0.666f) color |= 0x44; else if (r > 0.333f) color |= 0x4;
     if (g > 0.666f) color |= 0x22; else if (g > 0.333f) color |= 0x2;

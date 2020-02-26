@@ -48,9 +48,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
     const vector<T, 4> operator+(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { return vector<T, 4>{ a[A1] + b[B1], a[A2] + b[B2], a[A3] + b[B3], a[A4] + b[B4] }; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
-    const vector<T, 4>& operator+=(const shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] += b; a[A2] += b; a[A3] += b; a[A4] += b; return a; };
+    const vector<T, 4>& operator+=(shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] += b; a[A2] += b; a[A3] += b; a[A4] += b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
-    const vector<T, 4>& operator+=(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] += b[B1]; a[A2] += b[B2]; a[A3] += b[B3]; a[A4] += b[B4]; return a; };
+    const vector<T, 4>& operator+=(shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] += b[B1]; a[A2] += b[B2]; a[A3] += b[B3]; a[A4] += b[B4]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
     const vector<T, 4> operator-(const shift4<T, A1, A2, A3, A4>& a, const T& b) { return vector<T, 4>{ a[A1] - b, a[A2] - b, a[A3] - b, a[A4] - b }; };
@@ -59,9 +59,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
     const vector<T, 4> operator-(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { return vector<T, 4>{ a[A1] - b[B1], a[A2] - b[B2], a[A3] - b[B3], a[A4] - b[B4] }; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
-    const vector<T, 4>& operator-=(const shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] -= b; a[A2] -= b; a[A3] -= b; a[A4] -= b; return a; };
+    const vector<T, 4>& operator-=(shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] -= b; a[A2] -= b; a[A3] -= b; a[A4] -= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
-    const vector<T, 4>& operator-=(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] -= b[B1]; a[A2] -= b[B2]; a[A3] -= b[B3]; a[A4] -= b[B4]; return a; };
+    const vector<T, 4>& operator-=(shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] -= b[B1]; a[A2] -= b[B2]; a[A3] -= b[B3]; a[A4] -= b[B4]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
     const vector<T, 4> operator*(const shift4<T, A1, A2, A3, A4>& a, const T& b) { return vector<T, 4>{ a[A1] * b, a[A2] * b, a[A3] * b, a[A4] * b }; };
@@ -70,9 +70,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
     const vector<T, 4> operator*(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { return vector<T, 4>{ a[A1] * b[B1], a[A2] * b[B2], a[A3] * b[B3], a[A4] * b[B4] }; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
-    const vector<T, 4>& operator*=(const shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] *= b; a[A2] *= b; a[A3] *= b; a[A4] *= b; return a; };
+    const vector<T, 4>& operator*=(shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] *= b; a[A2] *= b; a[A3] *= b; a[A4] *= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
-    const vector<T, 4>& operator*=(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] *= b[B1]; a[A2] *= b[B2]; a[A3] *= b[B3]; a[A4] *= b[B4]; return a; };
+    const vector<T, 4>& operator*=(shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] *= b[B1]; a[A2] *= b[B2]; a[A3] *= b[B3]; a[A4] *= b[B4]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
     const vector<T, 4> operator/(const shift4<T, A1, A2, A3, A4>& a, const T& b) { return vector<T, 4>{ a[A1] / b, a[A2] / b, a[A3] / b, a[A4] / b }; };
@@ -81,9 +81,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
     const vector<T, 4> operator/(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { return vector<T, 4>{ a[A1] / b[B1], a[A2] / b[B2], a[A3] / b[B3], a[A4] / b[B4] }; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4>
-    const vector<T, 4>& operator/=(const shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] /= b; a[A2] /= b; a[A3] /= b; a[A4] /= b; return a; };
+    const vector<T, 4>& operator/=(shift4<T, A1, A2, A3, A4>& a, const T& b) { a[A1] /= b; a[A2] /= b; a[A3] /= b; a[A4] /= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int A3, unsigned int A4, unsigned int B1, unsigned int B2, unsigned int B3, unsigned int B4>
-    const vector<T, 4>& operator/=(const shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] /= b[B1]; a[A2] /= b[B2]; a[A3] /= b[B3]; a[A4] /= b[B4]; return a; };
+    const vector<T, 4>& operator/=(shift4<T, A1, A2, A3, A4>& a, const shift4<T, B1, B2, B3, B4>& b) { a[A1] /= b[B1]; a[A2] /= b[B2]; a[A3] /= b[B3]; a[A4] /= b[B4]; return a; };
 
 }; // namespace maths
 

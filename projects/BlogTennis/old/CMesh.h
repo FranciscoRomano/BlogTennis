@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "maths.h"
+#include "../maths.h"
 
 struct CMesh
 {

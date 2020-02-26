@@ -36,6 +36,18 @@ namespace maths {
     };
 
     template<typename T>
+    const T lerp(const T& a, const T& b, const T& t) { return a + (b - a) * t; };
+
+    template<typename T, unsigned int S>
+    const vector<T, S> lerp(const vector<T, S>& a, const vector<T, S>& b, const T& t)
+    {
+        vector<T, S> c;
+        for (unsigned int i = 0; i < S; i++)
+            c[i] = lerp<T>(a[i], b[i], t);
+        return c;
+    };
+
+    template<typename T>
     const vector<T, 3> cross(const vector<T, 3>& a, const vector<T, 3>& b)
     {
         return {

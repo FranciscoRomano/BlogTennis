@@ -6,15 +6,16 @@
 #define FLOAT_MAX 3.4028235E37
 #endif//FLOAT_MAX
 
+struct framebuffer_data { float depth; float4 color; };
+struct framebuffer_info {
+
+}; 
+
+
 const void dx(const GL3D::Vertex& a, const GL3D::Vertex& b, const float& t, GL3D::Vertex& c)
 {
     c.point = (b.point - a.point) / t;
     c.color = (b.color - a.color) / t;
-};
-
-void draw_horizontal_line(GL3D::Rasterizer& rasterizer, const GL3D::Vertex& a, const float4& colorDx, const float1& steps)
-{
-    
 };
 
 const float3 round(const float3& a)

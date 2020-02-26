@@ -1,9 +1,9 @@
 #pragma once
 /** Dependencies **********************************************************************************/
 
-#include "maths.h"
+#include "../maths.h"
 #include "Buffer.h"
-#include "Win32.Console.h"
+#include "../Win32.Console.h"
 
 /** Declarations **********************************************************************************/
 

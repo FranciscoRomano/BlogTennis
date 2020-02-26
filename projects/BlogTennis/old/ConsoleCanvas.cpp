@@ -86,7 +86,8 @@ void ConsoleCanvas::RASTERIZE(const ConsoleCanvas::Triangle& data)
 
 void ConsoleCanvas::RASTERIZE(const int& index, const float& r, const float& g, const float& b)
 {
-	static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
+	//static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
+	static CHAR ascii[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 	static float length = float(sizeof(ascii) - 1) + 0.015f;
 
 	// calculate luminance (HSP Color Model)

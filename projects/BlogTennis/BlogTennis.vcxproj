@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -162,25 +162,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h" />
-    <ClInclude Include="classes.h" />
-    <ClInclude Include="CMesh.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="ConsoleCanvas.h" />
-    <ClInclude Include="CRenderer.h" />
     <ClInclude Include="GL3D.Buffer.h" />
     <ClInclude Include="GL3D.Vertex.h" />
+    <ClInclude Include="graphics\Buffer.h" />
+    <ClInclude Include="graphics\Command.h" />
+    <ClInclude Include="graphics\Commands.h" />
+    <ClInclude Include="graphics\commands\CommandArray.h" />
+    <ClInclude Include="graphics\commands\Command.h" />
+    <ClInclude Include="graphics\commands\Command1.h" />
+    <ClInclude Include="graphics\commands\Command2.h" />
+    <ClInclude Include="graphics\commands\Command3.h" />
+    <ClInclude Include="graphics\commands\CommandBuffer.h" />
+    <ClInclude Include="graphics\Rasterizer.h" />
     <ClInclude Include="maths.h" />
-    <ClInclude Include="Vertex.h" />
     <ClInclude Include="Win32.Console.h" />
     <ClInclude Include="GL3D.Rasterizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CMesh.cpp" />
-    <ClCompile Include="ConsoleCanvas.cpp" />
-    <ClCompile Include="CRenderer.cpp" />
     <ClCompile Include="GL3D.Rasterizer.cpp" />
     <ClCompile Include="GL3D.Vertex.cpp" />
+    <ClCompile Include="graphics\Rasterizer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Win32.Console.cpp" />
   </ItemGroup>
