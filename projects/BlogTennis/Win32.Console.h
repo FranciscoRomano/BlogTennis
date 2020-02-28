@@ -84,6 +84,12 @@ namespace Win32 {
         // index operator overloading
         CHAR_INFO& operator[](const UINT& index);
 
+        // cast operator to Win32::ConsoleBuffer
+        operator Win32::ConsoleBuffer* ();
+
+        // cast operator to Win32::ConsoleInstance
+        operator Win32::ConsoleInstance* ();
+
     }; // class Console
 
 }; // namespace Win32

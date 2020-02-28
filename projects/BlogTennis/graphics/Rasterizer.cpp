@@ -15,6 +15,10 @@ Rasterizer::Rasterizer(const unsigned int& width, const unsigned int& height)
     // set float dimensions
     f_size_x = (float)width;
     f_size_y = (float)height;
+    f_full_x = f_size_x - 1.0f;
+    f_full_y = f_size_y - 1.0f;
+    f_half_x = f_full_x / 2.0f;
+    f_half_y = f_full_y / 2.0f;
     f_length = (float)(width * height);
 
     // resize render buffers
@@ -149,14 +153,14 @@ void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
     dx_ca.color /= lines;
 
     // iterate through horizontal lines
-    for (i1 = lines; i1 > -1; i1--)
+    for (i1 = lines; i1 > 0; i1--)
     {
         // calculate point & deltas
         point = b;
         dx_color = (c.color - b.color) / roundf(steps);
 
         // iterate through line pixels
-        for (i2 = steps; i2 > -1; i2--)
+        for (i2 = steps; i2 > 0; i2--)
         {
             // rasterize pixel
             rasterize(point);
@@ -263,6 +267,41 @@ void Rasterizer::rasterize(Command<COMMAND_TYPE_TRIANGLE>& command)
 
         // rasterize bottom flat
         rasterize(a, b, d);
+    }
+};
+
+void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& ibo, const unsigned int count, float4x4 transform)
+{
+    static Vertex a, b, c;
+    static Command<COMMAND_TYPE_TRIANGLE> command;
+
+    for (unsigned int i = 0; i < count;)
+    {
+        a = vbo[ibo[i++]];
+        a.coord = transform * a.coord;
+        
+        b = vbo[ibo[i++]];
+        b.coord = transform * b.coord;
+
+        c = vbo[ibo[i++]];
+        c.coord = transform * c.coord;
+
+        if ((b.coord.y - a.coord.y) * (c.coord.x - b.coord.x) - (c.coord.y - b.coord.y) * (b.coord.x - a.coord.x) < 0.0f)
+        {
+            command.a.color = a.color;
+            command.a.coord.xyz = a.coord.xyz / (float)a.coord.w;
+            command.a.coord.xy = (command.a.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+
+            command.b.color = b.color;
+            command.b.coord.xyz = b.coord.xyz / (float)b.coord.w;
+            command.b.coord.xy = (command.b.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+
+            command.c.color = c.color;
+            command.c.coord.xyz = c.coord.xyz / (float)c.coord.w;
+            command.c.coord.xy = (command.c.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+
+            rasterize(command);
+        }
     }
 };
 

@@ -42,11 +42,17 @@ WINCALL void WINAPI Win32::GetConsoleInstance(ConsoleInstance* instance)
     instance->hIn = GetStdHandle(STD_INPUT_HANDLE);
     instance->hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     instance->hWnd = GetConsoleWindow();
+    instance->hInstance = GetModuleHandleA(NULL);
     instance->pfnFocusEvent = empty_callback;
     instance->pfnKeyEvent = empty_callback;
     instance->pfnMenuEvent = empty_callback;
     instance->pfnMouseEvent = empty_callback;
     instance->pfnResizeEvent = empty_callback;
+
+    // get executable path
+    GetModuleFileNameA(instance->hInstance, instance->path, MAX_PATH);
+    for (int i = MAX_PATH - 1; instance->path[i] != '\\'; i--)
+        instance->path[i] = (CHAR)0;
 }
 
 WINCALL void WINAPI Win32::ReadConsoleInstanceInputA(ConsoleInstance* instance)

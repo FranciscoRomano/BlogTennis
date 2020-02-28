@@ -162,8 +162,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GL3D.Buffer.h" />
-    <ClInclude Include="GL3D.Vertex.h" />
     <ClInclude Include="graphics\Buffer.h" />
     <ClInclude Include="graphics\Command.h" />
     <ClInclude Include="graphics\Commands.h" />
@@ -176,11 +174,8 @@
     <ClInclude Include="graphics\Rasterizer.h" />
     <ClInclude Include="maths.h" />
     <ClInclude Include="Win32.Console.h" />
-    <ClInclude Include="GL3D.Rasterizer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GL3D.Rasterizer.cpp" />
-    <ClCompile Include="GL3D.Vertex.cpp" />
     <ClCompile Include="graphics\Rasterizer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Win32.Console.cpp" />

@@ -28,6 +28,8 @@ namespace Win32 {
         HANDLE                 hIn;            // input handle
         HANDLE                 hOut;           // output handle
         HWND                   hWnd;           // window handle
+        HINSTANCE              hInstance;      // instance handle
+        CHAR                   path[MAX_PATH]; // executable path
         PFN_ConsoleFocusEvent  pfnFocusEvent;  // focus event callback
         PFN_ConsoleKeyEvent    pfnKeyEvent;    // key event callback
         PFN_ConsoleMenuEvent   pfnMenuEvent;   // menu event callback

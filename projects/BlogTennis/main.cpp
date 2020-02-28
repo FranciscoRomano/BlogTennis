@@ -2,6 +2,10 @@
 
 #include <ctime>
 #include "maths.h"
+#include <string>
+#include <vector>
+#include <sstream>
+#include <fstream>
 #include "Win32.Console.h"
 #include "graphics/Rasterizer.h"
 
@@ -24,9 +28,65 @@ const unsigned int triangle_length = 10;
 Command<COMMAND_TYPE_TRIANGLE> triangle_command;
 Commands<COMMAND_TYPE_TRIANGLE> triangle_commands{ length };
 
+struct Mesh
+{
+    unsigned int ibo_length;
+    unsigned int vbo_length;
+    Buffer<Rasterizer::Index> ibo;
+    Buffer<Rasterizer::Vertex> vbo;
+};
+
 /** Declarations **********************************************************************************/
 
 float range(float a, float b) { float t = (rand() % 256) / 255.0f; return a + (b - a) * t; };
+
+void loadOBJFile(Win32::ConsoleInstance* instance, std::string path, Mesh& mesh)
+{
+    Rasterizer::Index index;
+    Rasterizer::Vertex vertex;
+    std::vector<Rasterizer::Index> indices;
+    std::vector<Rasterizer::Vertex> vertices;
+
+    // open binary file
+    std::string line;
+    std::ifstream file(instance->path + path);
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line.substr(1));
+        switch (line[0])
+        {
+        case 'v':
+            vertex.color = float4{ range(0, 1), range(0, 1), range(0, 1), 1 };
+            vertex.coord[3] = 1.0f;
+            iss >> vertex.coord[0];
+            iss >> vertex.coord[1];
+            iss >> vertex.coord[2];
+            vertex.coord[1] *= -1.0;
+            vertices.push_back(vertex);
+            break;
+        case 'f':
+            iss >> index;
+            indices.push_back(index - 1);
+            iss >> index;
+            indices.push_back(index - 1);
+            iss >> index;
+            indices.push_back(index - 1);
+            break;
+        default:
+            break;
+        }
+    }
+
+    // convert format to mesh [indices]
+    mesh.ibo.resize(mesh.ibo_length = (unsigned int)indices.size());
+    for (unsigned int i = 0; i < mesh.ibo_length; i++)
+        mesh.ibo[i] = indices[i];
+
+    // convert format to mesh [vertices]
+    mesh.vbo.resize(mesh.vbo_length = (unsigned int)vertices.size());
+    for (unsigned int i = 0; i < mesh.vbo_length; i++)
+        mesh.vbo[i] = vertices[i];
+};
 
 int main()
 {
@@ -40,40 +100,21 @@ int main()
     float4x4 transform;
     float4x4 projection = maths::perspective(70, 1, 0.01f, 1000.0f);
 
+    Mesh racket;
+    loadOBJFile(console, "meshes/racket.obj", racket);
+
+    Mesh suzanne;
+    loadOBJFile(console, "meshes/suzanne.obj", suzanne);
+
+    Mesh player;
+    loadOBJFile(console, "meshes/player.obj", player);
+
     while (true)
     {
         delta += 0.01f;
-        float x = sinf(delta) * 0.5f;
-        float y = cosf(delta) * 0.5f;
-        transform = projection * maths::translate(float3{ x, y, 2.0f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f);
 
         rasterizer.clear();
-
-        triangle_command.a.color = float4{ 1, 0, 0, 1 };
-        triangle_command.b.color = float4{ 0, 1, 0, 1 };
-        triangle_command.c.color = float4{ 0, 0, 1, 1 };
-
-
-        p1 = transform * float4{ 0,-1, 0, 1 }; p1.xyz /= float{ p1.w };
-        p2 = transform * float4{-1, 0, 0, 1 }; p2.xyz /= float{ p2.w };
-        p3 = transform * float4{ 0, 1, 0, 1 }; p3.xyz /= float{ p3.w };
-        triangle_command.a.coord = float3{ (p1.xy / 2.0f + 0.5f) * float2 { fw, fh }, p1.z };
-        triangle_command.b.coord = float3{ (p2.xy / 2.0f + 0.5f) * float2 { fw, fh }, p2.z };
-        triangle_command.c.coord = float3{ (p3.xy / 2.0f + 0.5f) * float2 { fw, fh }, p3.z };
-        triangle_commands.push(triangle_command);
-        
-
-        p1 = transform * float4{ 0,-1, 0, 1 }; p1.xyz /= float{ p1.w };
-        p2 = transform * float4{ 1, 0, 0, 1 }; p2.xyz /= float{ p2.w };
-        p3 = transform * float4{ 0, 1, 0, 1 }; p3.xyz /= float{ p3.w };
-        triangle_command.a.coord = float3{ (p1.xy / 2.0f + 0.5f) * float2 { fw, fh }, p1.z };
-        triangle_command.b.coord = float3{ (p2.xy / 2.0f + 0.5f) * float2 { fw, fh }, p2.z };
-        triangle_command.c.coord = float3{ (p3.xy / 2.0f + 0.5f) * float2 { fw, fh }, p3.z };
-        triangle_commands.push(triangle_command);
-
-
-        rasterizer.render(triangle_commands);
-
+        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();

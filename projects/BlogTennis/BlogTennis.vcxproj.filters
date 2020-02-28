@@ -21,15 +21,6 @@
     <ClInclude Include="Win32.Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GL3D.Rasterizer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GL3D.Buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GL3D.Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\commands\CommandArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,12 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Win32.Console.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GL3D.Rasterizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GL3D.Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">

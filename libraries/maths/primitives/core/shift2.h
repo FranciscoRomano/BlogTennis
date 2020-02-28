@@ -48,9 +48,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
     const vector<T, 2> operator+(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] + b[B1], a[A2] + b[B2] }; };
     template<typename T, unsigned int A1, unsigned int A2>
-    const vector<T, 2>& operator+=(shift2<T, A1, A2>& a, const T& b) { a[A1] += b; a[A2] += b; return a; };
+    const vector<T, 2> operator+=(shift2<T, A1, A2>& a, const T& b) { a[A1] += b; a[A2] += b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
-    const vector<T, 2>& operator+=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] += b[B1]; a[A2] += b[B2]; return a; };
+    const vector<T, 2> operator+=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] += b[B1]; a[A2] += b[B2]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2>
     const vector<T, 2> operator-(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] - b, a[A2] - b }; };
@@ -59,9 +59,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
     const vector<T, 2> operator-(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] - b[B1], a[A2] - b[B2] }; };
     template<typename T, unsigned int A1, unsigned int A2>
-    const vector<T, 2>& operator-=(shift2<T, A1, A2>& a, const T& b) { a[A1] -= b; a[A2] -= b; return a; };
+    const vector<T, 2> operator-=(shift2<T, A1, A2>& a, const T& b) { a[A1] -= b; a[A2] -= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
-    const vector<T, 2>& operator-=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] -= b[B1]; a[A2] -= b[B2]; return a; };
+    const vector<T, 2> operator-=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] -= b[B1]; a[A2] -= b[B2]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2>
     const vector<T, 2> operator*(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] * b, a[A2] * b }; };
@@ -70,9 +70,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
     const vector<T, 2> operator*(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] * b[B1], a[A2] * b[B2] }; };
     template<typename T, unsigned int A1, unsigned int A2>
-    const vector<T, 2>& operator*=(shift2<T, A1, A2>& a, const T& b) { a[A1] *= b; a[A2] *= b; return a; };
+    const vector<T, 2> operator*=(shift2<T, A1, A2>& a, const T& b) { a[A1] *= b; a[A2] *= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
-    const vector<T, 2>& operator*=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] *= b[B1]; a[A2] *= b[B2]; return a; };
+    const vector<T, 2> operator*=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] *= b[B1]; a[A2] *= b[B2]; return a; };
 
     template<typename T, unsigned int A1, unsigned int A2>
     const vector<T, 2> operator/(const shift2<T, A1, A2>& a, const T& b) { return vector<T, 2>{ a[A1] / b, a[A2] / b }; };
@@ -81,9 +81,9 @@ namespace maths {
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
     const vector<T, 2> operator/(const shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { return vector<T, 2>{ a[A1] / b[B1], a[A2] / b[B2] }; }
     template<typename T, unsigned int A1, unsigned int A2>
-    const vector<T, 2>& operator/=(shift2<T, A1, A2>& a, const T& b) { a[A1] /= b; a[A2] /= b; return a; };
+    const vector<T, 2> operator/=(shift2<T, A1, A2>& a, const T& b) { a[A1] /= b; a[A2] /= b; return a; };
     template<typename T, unsigned int A1, unsigned int A2, unsigned int B1, unsigned int B2>
-    const vector<T, 2>& operator/=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] /= b[B1]; a[A2] /= b[B2]; return a; };
+    const vector<T, 2> operator/=(shift2<T, A1, A2>& a, const shift2<T, B1, B2>& b) { a[A1] /= b[B1]; a[A2] /= b[B2]; return a; };
 
 }; // namespace maths
 

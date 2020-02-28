@@ -171,22 +171,27 @@ void Win32::Console::foreground(const UINT& index, const CHAR& value)
 
 void Win32::Console::pixel(const UINT& index, const FLOAT& r, const FLOAT& g, const FLOAT& b)
 {
-    //static CHAR ascii[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-    static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
-    static float length = float(sizeof(ascii)) + 0.015f;
+    const static CHAR ascii[] = { (CHAR)0x00, (CHAR)0xb0, (CHAR)0xb1, (CHAR)0xb2, (CHAR)0xDB };
+    const static float length = float(sizeof(ascii)) + 0.015f;
+    static float luminance;
+    static UINT character;
+    static WORD color;
+
+    // reset color
+    color = 0x0;
 
     // calculate luminance (HSP Color Model)
-    float l = sqrtf(0.299f * powf(r, 2) + 0.587f * powf(g, 2) + 0.114f * powf(b, 2));
+    luminance = sqrtf(0.299f * powf(r, 2) + 0.587f * powf(g, 2) + 0.114f * powf(b, 2));
+    if (luminance > 0.666f) color |= 0x88; else if (luminance > 0.333f) color |= 0x8;
 
     // calculate color
-    WORD color = 0x0;
-    if (l > 0.666f) color |= 0x88; else if (l > 0.333f) color |= 0x8;
     if (r > 0.666f) color |= 0x44; else if (r > 0.333f) color |= 0x4;
     if (g > 0.666f) color |= 0x22; else if (g > 0.333f) color |= 0x2;
     if (b > 0.666f) color |= 0x11; else if (b > 0.333f) color |= 0x1;
 
     // set char info
-    buffer.pCharInfo[index] = { (WCHAR)ascii[max(int(l * length), 0)], color };
+    character = int(luminance * length);
+    buffer.pCharInfo[index] = { (WCHAR)ascii[max(min(character, sizeof(ascii)), 0)], color };
 };
 
 void Win32::Console::readA()
@@ -223,6 +228,18 @@ CHAR_INFO& Win32::Console::operator[](const UINT& index)
 {
     // return console buffer char info
     return buffer.pCharInfo[index];
+};
+
+Win32::Console::operator Win32::ConsoleBuffer* ()
+{
+    // return console buffer address
+    return &buffer;
+};
+
+Win32::Console::operator Win32::ConsoleInstance* ()
+{
+    // return console instance address
+    return &instance;
 };
 
 /**************************************************************************************************/
