@@ -40,6 +40,36 @@ void Rasterizer::clear()
     }
 };
 
+void Rasterizer::render(Commands<COMMAND_TYPE_LINE>& commands)
+{
+    // check if commands available
+    while (!commands.empty())
+    {
+        // rasterize next line command
+        rasterize(commands.pull());
+    }
+};
+
+void Rasterizer::render(Commands<COMMAND_TYPE_POINT>& commands)
+{
+    // check if commands available
+    while (!commands.empty())
+    {
+        // rasterize next point command
+        rasterize(commands.pull());
+    }
+};
+
+void Rasterizer::render(Commands<COMMAND_TYPE_TRIANGLE>& commands)
+{
+    // check if commands available
+    while (!commands.empty())
+    {
+        // rasterize next triangle command
+        rasterize(commands.pull());
+    }
+};
+
 void Rasterizer::resize(const unsigned int& length)
 {
     index_buffer.resize(length);
@@ -66,7 +96,7 @@ void Rasterizer::rasterize(CommandData a)
         {
             // save command data into buffers
             index_buffer[index]++;
-            color_buffer[index]+= a.color;
+            color_buffer[index] += a.color;
             depth_buffer[index] = a.coord.z;
         }
     }
@@ -99,10 +129,6 @@ void Rasterizer::rasterize(CommandData a, CommandData b)
 
 void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
 {
-    rasterize(a, b);
-    rasterize(b, c);
-    rasterize(c, a);
-
     static float i1;
     static float i2;
     static float steps;
@@ -153,6 +179,97 @@ void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
     }
 };
 
+void Rasterizer::rasterize(Command<COMMAND_TYPE_LINE>& command)
+{
+    // rasterizer line command data
+    rasterize(
+        CommandData{
+            float3{ roundf(command.a.coord.x), roundf(command.a.coord.y), command.a.coord.z },
+            command.a.color
+        },
+        CommandData{
+            float3{ roundf(command.b.coord.x), roundf(command.b.coord.y), command.b.coord.z },
+            command.b.color
+        }
+    );
+};
+
+void Rasterizer::rasterize(Command<COMMAND_TYPE_POINT>& command)
+{
+    // rasterizer point command data
+    rasterize(
+        CommandData{
+            float3{ roundf(command.a.coord.x), roundf(command.a.coord.y), command.a.coord.z },
+            command.a.color
+        }
+    );
+};
+
+void Rasterizer::rasterize(Command<COMMAND_TYPE_TRIANGLE>& command)
+{
+    static float length;
+    static CommandData a;
+    static CommandData b;
+    static CommandData c;
+    static CommandData d;
+
+    // sort by y
+    if (command.a.coord.y > command.b.coord.y) swap(command.a, command.b);
+    if (command.b.coord.y > command.c.coord.y) swap(command.b, command.c);
+    if (command.a.coord.y > command.b.coord.y) swap(command.a, command.b);
+
+    // flat triangle
+    if (command.a.coord.y == command.b.coord.y)
+    {
+        // sort by x
+        if (command.a.coord.x > command.b.coord.x) swap(command.a, command.b);
+
+        // rasterizer triangle command data
+        rasterize(
+            CommandData{
+                float3{ roundf(command.a.coord.x), roundf(command.a.coord.y), command.a.coord.z },
+                command.a.color
+            },
+            CommandData{
+                float3{ roundf(command.b.coord.x), roundf(command.b.coord.y), command.b.coord.z },
+                command.b.color
+            },
+            CommandData{
+                float3{ roundf(command.c.coord.x), roundf(command.c.coord.y), command.c.coord.z },
+                command.c.color
+            }
+        );
+    }
+    // complex triangle
+    else
+    {
+        // round all points
+        a = CommandData{ float3{ roundf(command.a.coord.x), roundf(command.a.coord.y), command.a.coord.z }, command.a.color };
+        b = CommandData{ float3{ roundf(command.b.coord.x), roundf(command.b.coord.y), command.b.coord.z }, command.b.color };
+        c = CommandData{ float3{ roundf(command.c.coord.x), roundf(command.c.coord.y), command.c.coord.z }, command.c.color };
+
+        // calculate new point
+        length = fabs((b.coord.y - a.coord.y) / (c.coord.y - a.coord.y));
+        d = CommandData{
+            float3 {
+                floor(a.coord.x + (c.coord.x - a.coord.x) * length),
+                b.coord.y,
+                floor(a.coord.z + (c.coord.z - a.coord.z) * length)
+            },
+            a.color + (c.color - a.color) * length,
+        };
+
+        // sort by x
+        if (b.coord.x > d.coord.x) swap(b, d);
+
+        // rasterize top flat
+        rasterize(c, b, d);
+
+        // rasterize bottom flat
+        rasterize(a, b, d);
+    }
+};
+
 void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& ibo, const unsigned int count, float4x4 transform)
 {
     static Vertex a, b, c;
@@ -162,7 +279,7 @@ void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& 
     {
         a = vbo[ibo[i++]];
         a.coord = transform * a.coord;
-        
+
         b = vbo[ibo[i++]];
         b.coord = transform * b.coord;
 
@@ -183,7 +300,7 @@ void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& 
             command.c.coord.xyz = c.coord.xyz / (float)c.coord.w;
             command.c.coord.xy = (command.c.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
 
-            rasterize(command.a, command.b, command.c);
+            rasterize(command);
         }
     }
 };

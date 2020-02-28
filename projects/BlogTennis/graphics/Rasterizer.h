@@ -36,28 +36,16 @@ public:
     // clear values
     void clear();
 
-    // render lines
-    void render(Commands<COMMAND_TYPE_LINE>& commands);
-
-    // render points
-    void render(Commands<COMMAND_TYPE_POINT>& commands);
-
-    // render triangles
-    void render(Commands<COMMAND_TYPE_TRIANGLE>& commands);
-
     // resize render buffers
     void resize(const unsigned int& length);
 
     // rasterize line commands
-    void rasterize(Command<COMMAND_TYPE_LINE>& command);
     void rasterize(CommandData a, CommandData b);
 
     // rasterize point commands
-    void rasterize(Command<COMMAND_TYPE_POINT>& command);
     void rasterize(CommandData a);
 
     // rasterize triangle commands
-    void rasterize(Command<COMMAND_TYPE_TRIANGLE>& command);
     void rasterize(CommandData a, CommandData b, CommandData c);
 
 

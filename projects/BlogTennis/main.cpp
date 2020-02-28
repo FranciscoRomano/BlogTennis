@@ -56,7 +56,7 @@ void loadOBJFile(Win32::ConsoleInstance* instance, std::string path, Mesh& mesh)
         switch (line[0])
         {
         case 'v':
-            vertex.color = float4{ range(0, 1), range(0, 1), range(0, 1), 1 };
+            vertex.color = float4{ range(0, 1), range(0, 1), range(0, 1), 1.0 };
             vertex.coord[3] = 1.0f;
             iss >> vertex.coord[0];
             iss >> vertex.coord[1];
@@ -88,8 +88,12 @@ void loadOBJFile(Win32::ConsoleInstance* instance, std::string path, Mesh& mesh)
         mesh.vbo[i] = vertices[i];
 };
 
+#include <iostream>
+
 int main()
 {
+    std::cout << "Hello World!\n";
+
     float fw = width - 1;
     float fh = height - 1;
     float hw = fw / 2.0f;
@@ -114,7 +118,7 @@ int main()
         delta += 0.01f;
 
         rasterizer.clear();
-        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        rasterizer.draw_triangles(player.vbo, player.ibo, player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();
