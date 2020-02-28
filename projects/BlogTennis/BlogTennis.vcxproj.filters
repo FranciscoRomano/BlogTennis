@@ -42,12 +42,6 @@
     <ClInclude Include="graphics\Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\Command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics\Commands.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\Rasterizer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

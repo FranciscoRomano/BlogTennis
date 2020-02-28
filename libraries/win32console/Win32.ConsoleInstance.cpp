@@ -95,6 +95,8 @@ WINCALL void WINAPI Win32::ReadConsoleInstanceInputA(ConsoleInstance* instance)
             }
         }
     }
+
+    FlushConsoleInputBuffer(instance->hIn);
 }
 
 WINCALL void WINAPI Win32::ReadConsoleInstanceInputW(ConsoleInstance* instance)
@@ -137,4 +139,6 @@ WINCALL void WINAPI Win32::ReadConsoleInstanceInputW(ConsoleInstance* instance)
             }
         }
     }
+
+    FlushConsoleInputBuffer(instance->hIn);
 }

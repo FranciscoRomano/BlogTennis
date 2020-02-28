@@ -56,18 +56,21 @@ void Rasterizer::rasterize(Vertex a)
     x = unsigned int(a.coord.x);
     y = unsigned int(a.coord.y);
 
+    // check if visible
+    if (a.coord.z < 0.0f) return;
+
     // perform bound box check
-    if ((x < u_size_x && y < u_size_y) && (a.coord.w >= 0.0f))
+    if ((x < u_size_x && y < u_size_y))
     {
         index = y * u_size_x + x;
 
         // perform depth buffer check
-        if (a.coord.w < depth_buffer[index])
+        if (a.coord.z < depth_buffer[index])
         {
             // save command data into buffers
             index_buffer[index]++;
             color_buffer[index] = a.color;
-            depth_buffer[index] = a.coord.w;
+            depth_buffer[index] = a.coord.z;
         }
     }
 };
@@ -76,6 +79,9 @@ void Rasterizer::rasterize(Vertex a, Vertex b)
 {
     static float i;
     static float length;
+
+    // check if visible
+    if (a.coord.z < 0.0f || b.coord.z < 0.0f) return;
 
     // calculate direction
     b = { b.coord - a.coord, b.color - a.color };
@@ -99,9 +105,8 @@ void Rasterizer::rasterize(Vertex a, Vertex b)
 
 void Rasterizer::rasterize(Vertex l, Vertex r, Vertex t)
 {
-    rasterize(l, r);
-    rasterize(r, t);
-    rasterize(t, l);
+    // check if visible
+    if (l.coord.z < 0.0f && r.coord.z < 0.0f && t.coord.z < 0.0f) return;
 
     float length = fabsf(t.coord.y - l.coord.y);
     Vertex dx_a = { (t.coord - l.coord) / length, (t.color - l.color) / length };
@@ -136,6 +141,8 @@ void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& 
         a.coord = transform * a.coord;
         b.coord = transform * b.coord;
         c.coord = transform * c.coord;
+
+        if (a.coord.z < 0.0f && b.coord.z < 0.0f && c.coord.z < 0.0f) continue;
 
         // divide vertices by w
         a.coord.xyz = a.coord.xyz / (float)a.coord.w;

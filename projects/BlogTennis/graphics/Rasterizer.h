@@ -2,7 +2,9 @@
 /** Dependencies **********************************************************************************/
 
 #include "Buffer.h"
-#include "Commands.h"
+#include <maths/maths.h>
+
+template<typename T> void swap(T& a, T& b) { static T c; c = a; a = b; b = c; };
 
 /** Declarations **********************************************************************************/
 

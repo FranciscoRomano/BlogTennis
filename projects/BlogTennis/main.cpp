@@ -13,20 +13,9 @@ const unsigned int width = 81;
 const unsigned int height = 81;
 const unsigned int length = width * height;
 
+float3 camera;
 Rasterizer rasterizer{ width, height };
 Win32::Console console{ width, height };
-
-const unsigned int line_length = 40;
-Command<COMMAND_TYPE_LINE> line_command;
-Commands<COMMAND_TYPE_LINE> line_commands{ length };
-
-const unsigned int point_length = 20;
-Command<COMMAND_TYPE_POINT> point_command;
-Commands<COMMAND_TYPE_POINT> point_commands{ length };
-
-const unsigned int triangle_length = 10;
-Command<COMMAND_TYPE_TRIANGLE> triangle_command;
-Commands<COMMAND_TYPE_TRIANGLE> triangle_commands{ length };
 
 struct Mesh
 {
@@ -88,11 +77,21 @@ void loadOBJFile(Win32::ConsoleInstance* instance, std::string path, Mesh& mesh)
         mesh.vbo[i] = vertices[i];
 };
 
-#include <iostream>
+void on_key(KEY_EVENT_RECORD e)
+{
+        if (e.wVirtualKeyCode == 'W')
+            camera.z -= 0.1f;
+        if (e.wVirtualKeyCode == 'S')
+            camera.z += 0.1f;
+        if (e.wVirtualKeyCode == 'A')
+            camera.x -= 0.1f;
+        if (e.wVirtualKeyCode == 'D')
+            camera.x += 0.1f;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    console.bind(on_key);
 
     float fw = width - 1;
     float fh = height - 1;
@@ -113,18 +112,19 @@ int main()
     Mesh suzanne;
     loadOBJFile(console, "meshes/suzanne.obj", suzanne);
 
-    unsigned int steps = 0;
+    float x, z;
 
     while (true)
     {
-        steps += 2;
-        delta += 0.005f;
+        console.readA();
+
+        delta += 0.001f;
 
         rasterizer.clear();
         
-        //rasterizer.draw_triangles(player.vbo, player.ibo, steps % player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
-        //rasterizer.draw_triangles(racket.vbo, racket.ibo, steps % racket.ibo_length, projection * maths::translate(float3{ 0, 0, 1 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
-        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        //rasterizer.draw_triangles(player.vbo, player.ibo, player.ibo_length, projection * maths::translate(float3{ -camera.x, 1 -camera.y, 2 + camera.z }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        //rasterizer.draw_triangles(racket.vbo, racket.ibo, racket.ibo_length, projection * maths::translate(float3{ -camera.x, -camera.y, 1 + camera.z }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ -camera.x, -camera.y, 2 + camera.z }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();
