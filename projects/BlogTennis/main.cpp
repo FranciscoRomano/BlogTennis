@@ -9,8 +9,8 @@
 #include "Win32.Console.h"
 #include "graphics/Rasterizer.h"
 
-const unsigned int width = 121;
-const unsigned int height = 121;
+const unsigned int width = 81;
+const unsigned int height = 81;
 const unsigned int length = width * height;
 
 Rasterizer rasterizer{ width, height };
@@ -124,7 +124,7 @@ int main()
         
         //rasterizer.draw_triangles(player.vbo, player.ibo, steps % player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
         //rasterizer.draw_triangles(racket.vbo, racket.ibo, steps % racket.ibo_length, projection * maths::translate(float3{ 0, 0, 1 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
-        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, steps % suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();

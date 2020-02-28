@@ -57,17 +57,17 @@ void Rasterizer::rasterize(Vertex a)
     y = unsigned int(a.coord.y);
 
     // perform bound box check
-    if ((x < u_size_x && y < u_size_y) && !(a.coord.z < 0.0f))
+    if ((x < u_size_x && y < u_size_y) && (a.coord.w >= 0.0f))
     {
         index = y * u_size_x + x;
 
         // perform depth buffer check
-        if (a.coord.z <= depth_buffer[index])
+        if (a.coord.w < depth_buffer[index])
         {
             // save command data into buffers
             index_buffer[index]++;
             color_buffer[index] = a.color;
-            depth_buffer[index] = a.coord.z;
+            depth_buffer[index] = a.coord.w;
         }
     }
 };
@@ -99,9 +99,9 @@ void Rasterizer::rasterize(Vertex a, Vertex b)
 
 void Rasterizer::rasterize(Vertex l, Vertex r, Vertex t)
 {
-    //rasterize(l, r);
-    //rasterize(r, t);
-    //rasterize(t, l);
+    rasterize(l, r);
+    rasterize(r, t);
+    rasterize(t, l);
 
     float length = fabsf(t.coord.y - l.coord.y);
     Vertex dx_a = { (t.coord - l.coord) / length, (t.color - l.color) / length };
@@ -181,8 +181,8 @@ void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& 
                     float4 {
                         floor(a.coord.x + (c.coord.x - a.coord.x) * length),
                         b.coord.y,
-                        floor(a.coord.z + (c.coord.z - a.coord.z) * length),
-                        floor(a.coord.w + (c.coord.w - a.coord.w) * length)
+                        a.coord.z + (c.coord.z - a.coord.z) * length,
+                        a.coord.w + (c.coord.w - a.coord.w) * length
                     },
                     a.color + (c.color - a.color) * length,
                 };
