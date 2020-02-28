@@ -47,7 +47,7 @@ void Rasterizer::resize(const unsigned int& length)
     color_buffer.resize(length);
 };
 
-void Rasterizer::rasterize(CommandData a)
+void Rasterizer::rasterize(Vertex a)
 {
     static unsigned int x;
     static unsigned int y;
@@ -72,7 +72,7 @@ void Rasterizer::rasterize(CommandData a)
     }
 };
 
-void Rasterizer::rasterize(CommandData a, CommandData b)
+void Rasterizer::rasterize(Vertex a, Vertex b)
 {
     static float i;
     static float length;
@@ -97,29 +97,29 @@ void Rasterizer::rasterize(CommandData a, CommandData b)
     }
 };
 
-void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
+void Rasterizer::rasterize(Vertex lft, Vertex rgt, Vertex top)
 {
-    rasterize(a, b);
-    rasterize(b, c);
-    rasterize(c, a);
+    //rasterize(a, b);
+    //rasterize(b, c);
+    //rasterize(c, a);
 
     static float i1;
     static float i2;
     static float steps;
     static float lines;
     static float delta;
+    static Vertex point;
+    static Vertex dx_ba;
+    static Vertex dx_ca;
     static float4 dx_color;
-    static CommandData point;
-    static CommandData dx_ba;
-    static CommandData dx_ca;
 
     // calculate directions
-    dx_ba = { a.coord - b.coord, a.color - b.color };
-    dx_ca = { a.coord - c.coord, a.color - c.color };
+    dx_ba = { top.coord - lft.coord, top.color - lft.color };
+    dx_ca = { top.coord - rgt.coord, top.color - rgt.color };
 
     // calculate lines & deltas
     lines = fabs(dx_ba.coord.y);
-    steps = c.coord.x - b.coord.x;
+    steps = rgt.coord.x - lft.coord.x;
     delta = steps / lines;
     dx_ba.coord /= lines;
     dx_ba.color /= lines;
@@ -130,8 +130,8 @@ void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
     for (i1 = lines; i1 > 0; i1--)
     {
         // calculate point & deltas
-        point = b;
-        dx_color = (c.color - b.color) / roundf(steps);
+        point = lft;
+        dx_color = (rgt.color - lft.color) / roundf(steps);
 
         // iterate through line pixels
         for (i2 = steps; i2 > 0; i2--)
@@ -146,44 +146,91 @@ void Rasterizer::rasterize(CommandData a, CommandData b, CommandData c)
 
         // increment/decrement next line deltas
         steps -= delta;
-        b.coord += dx_ba.coord;
-        b.color += dx_ba.color;
-        c.coord += dx_ca.coord;
-        c.color += dx_ca.color;
+        lft.coord += dx_ba.coord;
+        lft.color += dx_ba.color;
+        rgt.coord += dx_ca.coord;
+        rgt.color += dx_ca.color;
     }
 };
 
 void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& ibo, const unsigned int count, float4x4 transform)
 {
-    static Vertex a, b, c;
-    static Command<COMMAND_TYPE_TRIANGLE> command;
+    static float length;
+    static Vertex a, b, c, d;
 
+    // iterate through buffers
     for (unsigned int i = 0; i < count;)
     {
+        // get indexed data
         a = vbo[ibo[i++]];
-        a.coord = transform * a.coord;
-        
         b = vbo[ibo[i++]];
-        b.coord = transform * b.coord;
-
         c = vbo[ibo[i++]];
+
+        // calculate transform
+        a.coord = transform * a.coord;
+        b.coord = transform * b.coord;
         c.coord = transform * c.coord;
 
+        // check if visible triangle
         if ((b.coord.y - a.coord.y) * (c.coord.x - b.coord.x) - (c.coord.y - b.coord.y) * (b.coord.x - a.coord.x) < 0.0f)
         {
-            command.a.color = a.color;
-            command.a.coord.xyz = a.coord.xyz / (float)a.coord.w;
-            command.a.coord.xy = (command.a.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+            // divide coord by w
+            a.coord.xyz = a.coord.xyz / (float)a.coord.w;
+            b.coord.xyz = b.coord.xyz / (float)b.coord.w;
+            c.coord.xyz = c.coord.xyz / (float)c.coord.w;
 
-            command.b.color = b.color;
-            command.b.coord.xyz = b.coord.xyz / (float)b.coord.w;
-            command.b.coord.xy = (command.b.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+            // calculate screen points
+            a.coord.xy = float2{ roundf((a.coord.x + 1.0f) * f_half_x), roundf((a.coord.y + 1.0f) * f_half_y) };
+            b.coord.xy = float2{ roundf((b.coord.x + 1.0f) * f_half_x), roundf((b.coord.y + 1.0f) * f_half_y) };
+            c.coord.xy = float2{ roundf((c.coord.x + 1.0f) * f_half_x), roundf((c.coord.y + 1.0f) * f_half_y) };
 
-            command.c.color = c.color;
-            command.c.coord.xyz = c.coord.xyz / (float)c.coord.w;
-            command.c.coord.xy = (command.c.coord.xy + 1.0f) * float2{ f_half_x, f_half_y };
+            // sort vertex data by y axis
+            if (a.coord.y > b.coord.y) swap(a, b);
+            if (b.coord.y > c.coord.y) swap(b, c);
+            if (a.coord.y > b.coord.y) swap(a, b);
 
-            rasterize(command.a, command.b, command.c);
+            // check for top-flat triangle
+            if (a.coord.y == b.coord.y)
+            {
+                // sort A & B vertex by x
+                if (a.coord.x > b.coord.x) swap(a, b);
+
+                // rasterize triangle
+                rasterize(a, b, c);
+            }
+            // check for bottom-flat triangle
+            else if (b.coord.y == c.coord.y)
+            {
+                // sort B & C vertex by x
+                if (b.coord.x > c.coord.x) swap(b, c);
+
+                // rasterize triangle
+                rasterize(b, c, a);
+            }
+            else
+            {
+                // calculate new point
+                length = fabs((b.coord.y - a.coord.y) / (c.coord.y - a.coord.y));
+                d = Vertex{
+                    float4 {
+                        floor(a.coord.x + (c.coord.x - a.coord.x) * length),
+                        b.coord.y,
+                        floor(a.coord.z + (c.coord.z - a.coord.z) * length),
+                        floor(a.coord.w + (c.coord.w - a.coord.w) * length)
+                    },
+                    a.color + (c.color - a.color) * length,
+                };
+
+                // sort B & D vertex by x
+                if (b.coord.x > d.coord.x) swap(b, d);
+
+                // rasterize top-flat triangle
+                rasterize(b, d, a);
+
+                // rasterize bottom-flat triangle
+                rasterize(b, d, c);
+            }
+
         }
     }
 };

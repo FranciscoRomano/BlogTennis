@@ -25,7 +25,7 @@ class Rasterizer
 
 public:
     typedef unsigned int Index;
-    struct Vertex { float4 coord; float4 color; };
+    struct Vertex { float4 coord, color; };
 
     // destructor
     virtual ~Rasterizer() = default;
@@ -40,15 +40,13 @@ public:
     void resize(const unsigned int& length);
 
     // rasterize line commands
-    void rasterize(CommandData a, CommandData b);
+    void rasterize(Vertex a, Vertex b);
 
     // rasterize point commands
-    void rasterize(CommandData a);
+    void rasterize(Vertex a);
 
     // rasterize triangle commands
-    void rasterize(CommandData a, CommandData b, CommandData c);
-
-
+    void rasterize(Vertex a, Vertex b, Vertex c);
 
     void draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& ibo, const unsigned int count, float4x4 transform);
 
