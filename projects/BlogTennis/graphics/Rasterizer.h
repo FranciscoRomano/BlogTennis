@@ -36,17 +36,20 @@ public:
     // clear values
     void clear();
 
-    // resize render buffers
+    // resize buffers
     void resize(const unsigned int& length);
 
-    // rasterize line commands
+    // rasterize line
     void rasterize(Vertex a, Vertex b);
 
-    // rasterize point commands
+    // rasterize point
     void rasterize(Vertex a);
 
-    // rasterize triangle commands
-    void rasterize(Vertex a, Vertex b, Vertex c);
+    /// <summary> rasterize triangle </summary>
+    /// <param name="l"> left vertex </param>
+    /// <param name="r"> right vertex </param>
+    /// <param name="t"> tip/top vertex </param>
+    void rasterize(Vertex l, Vertex r, Vertex t);
 
     void draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& ibo, const unsigned int count, float4x4 transform);
 

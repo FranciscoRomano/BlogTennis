@@ -57,16 +57,16 @@ void Rasterizer::rasterize(Vertex a)
     y = unsigned int(a.coord.y);
 
     // perform bound box check
-    if (x < u_size_x && y < u_size_y)
+    if ((x < u_size_x && y < u_size_y) && !(a.coord.z < 0.0f))
     {
         index = y * u_size_x + x;
 
         // perform depth buffer check
-        if (a.coord.z >= 0.0f && a.coord.z <= depth_buffer[index])
+        if (a.coord.z <= depth_buffer[index])
         {
             // save command data into buffers
             index_buffer[index]++;
-            color_buffer[index]+= a.color;
+            color_buffer[index] = a.color;
             depth_buffer[index] = a.coord.z;
         }
     }
@@ -97,59 +97,25 @@ void Rasterizer::rasterize(Vertex a, Vertex b)
     }
 };
 
-void Rasterizer::rasterize(Vertex lft, Vertex rgt, Vertex top)
+void Rasterizer::rasterize(Vertex l, Vertex r, Vertex t)
 {
-    //rasterize(a, b);
-    //rasterize(b, c);
-    //rasterize(c, a);
+    //rasterize(l, r);
+    //rasterize(r, t);
+    //rasterize(t, l);
 
-    static float i1;
-    static float i2;
-    static float steps;
-    static float lines;
-    static float delta;
-    static Vertex point;
-    static Vertex dx_ba;
-    static Vertex dx_ca;
-    static float4 dx_color;
+    float length = fabsf(t.coord.y - l.coord.y);
+    Vertex dx_a = { (t.coord - l.coord) / length, (t.color - l.color) / length };
+    Vertex dx_b = { (t.coord - r.coord) / length, (t.color - r.color) / length };
 
-    // calculate directions
-    dx_ba = { top.coord - lft.coord, top.color - lft.color };
-    dx_ca = { top.coord - rgt.coord, top.color - rgt.color };
-
-    // calculate lines & deltas
-    lines = fabs(dx_ba.coord.y);
-    steps = rgt.coord.x - lft.coord.x;
-    delta = steps / lines;
-    dx_ba.coord /= lines;
-    dx_ba.color /= lines;
-    dx_ca.coord /= lines;
-    dx_ca.color /= lines;
-
-    // iterate through horizontal lines
-    for (i1 = lines; i1 > 0; i1--)
+    for (float i = 0; i < length; i++)
     {
-        // calculate point & deltas
-        point = lft;
-        dx_color = (rgt.color - lft.color) / roundf(steps);
+        rasterize(l, r);
 
-        // iterate through line pixels
-        for (i2 = steps; i2 > 0; i2--)
-        {
-            // rasterize pixel
-            rasterize(point);
+        l.coord += dx_a.coord;
+        l.color += dx_a.color;
 
-            // increment line position
-            point.coord.x += 1.0f;
-            point.color += dx_color;
-        }
-
-        // increment/decrement next line deltas
-        steps -= delta;
-        lft.coord += dx_ba.coord;
-        lft.color += dx_ba.color;
-        rgt.coord += dx_ca.coord;
-        rgt.color += dx_ca.color;
+        r.coord += dx_b.coord;
+        r.color += dx_b.color;
     }
 };
 
@@ -162,23 +128,23 @@ void Rasterizer::draw_triangles(const Buffer<Vertex>& vbo, const Buffer<Index>& 
     for (unsigned int i = 0; i < count;)
     {
         // get indexed data
-        a = vbo[ibo[i++]];
-        b = vbo[ibo[i++]];
         c = vbo[ibo[i++]];
+        b = vbo[ibo[i++]];
+        a = vbo[ibo[i++]];
 
         // calculate transform
         a.coord = transform * a.coord;
         b.coord = transform * b.coord;
         c.coord = transform * c.coord;
 
-        // check if visible triangle
-        if ((b.coord.y - a.coord.y) * (c.coord.x - b.coord.x) - (c.coord.y - b.coord.y) * (b.coord.x - a.coord.x) < 0.0f)
-        {
-            // divide coord by w
-            a.coord.xyz = a.coord.xyz / (float)a.coord.w;
-            b.coord.xyz = b.coord.xyz / (float)b.coord.w;
-            c.coord.xyz = c.coord.xyz / (float)c.coord.w;
+        // divide vertices by w
+        a.coord.xyz = a.coord.xyz / (float)a.coord.w;
+        b.coord.xyz = b.coord.xyz / (float)b.coord.w;
+        c.coord.xyz = c.coord.xyz / (float)c.coord.w;
 
+        // check if visible triangle
+        if ((b.coord.y - a.coord.y) * (c.coord.x - b.coord.x) - (c.coord.y - b.coord.y) * (b.coord.x - a.coord.x) > 0.0f)
+        {
             // calculate screen points
             a.coord.xy = float2{ roundf((a.coord.x + 1.0f) * f_half_x), roundf((a.coord.y + 1.0f) * f_half_y) };
             b.coord.xy = float2{ roundf((b.coord.x + 1.0f) * f_half_x), roundf((b.coord.y + 1.0f) * f_half_y) };
@@ -242,3 +208,56 @@ Rasterizer::operator float* () { return depth_buffer; };
 Rasterizer::operator float4* () { return color_buffer; };
 
 /**************************************************************************************************/
+
+
+/*
+    static float i1;
+    static float i2;
+    static float steps;
+    static float lines;
+    static float delta;
+    static Vertex point;
+    static Vertex dx_ba;
+    static Vertex dx_ca;
+    static float4 dx_color;
+
+    // calculate directions
+    dx_ba = { top.coord - lft.coord, top.color - lft.color };
+    dx_ca = { top.coord - rgt.coord, top.color - rgt.color };
+
+    // calculate lines & deltas
+    lines = fabs(dx_ba.coord.y);
+    steps = rgt.coord.x - lft.coord.x;
+    delta = steps / lines;
+    dx_ba.coord /= lines;
+    dx_ba.color /= lines;
+    dx_ca.coord /= lines;
+    dx_ca.color /= lines;
+
+    // iterate through horizontal lines
+    for (i1 = lines; i1 > 0; i1--)
+    {
+        // calculate point & deltas
+        point = lft;
+        dx_color = (rgt.color - lft.color) / roundf(steps);
+
+        // iterate through line pixels
+        for (i2 = steps; i2 > 0; i2--)
+        {
+            // rasterize pixel
+            rasterize(point);
+
+            // increment line position
+            point.coord.x += 1.0f;
+            point.color += dx_color;
+        }
+
+        // increment/decrement next line deltas
+        steps -= delta;
+        lft.coord += dx_ba.coord;
+        lft.color += dx_ba.color;
+        rgt.coord += dx_ca.coord;
+        rgt.color += dx_ca.color;
+    }
+
+*/

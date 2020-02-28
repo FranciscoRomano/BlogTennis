@@ -9,8 +9,8 @@
 #include "Win32.Console.h"
 #include "graphics/Rasterizer.h"
 
-const unsigned int width = 81;
-const unsigned int height = 81;
+const unsigned int width = 121;
+const unsigned int height = 121;
 const unsigned int length = width * height;
 
 Rasterizer rasterizer{ width, height };
@@ -56,12 +56,12 @@ void loadOBJFile(Win32::ConsoleInstance* instance, std::string path, Mesh& mesh)
         switch (line[0])
         {
         case 'v':
-            vertex.color = float4{ range(0, 1), range(0, 1), range(0, 1), 1.0 };
+            vertex.color = float4{ range(0, 1), range(0, 1), range(0, 1), 1 };
             vertex.coord[3] = 1.0f;
             iss >> vertex.coord[0];
             iss >> vertex.coord[1];
             iss >> vertex.coord[2];
-            vertex.coord[1] *= -1.0;
+            vertex.coord[1] *= -1.0f;
             vertices.push_back(vertex);
             break;
         case 'f':
@@ -104,21 +104,24 @@ int main()
     float4x4 transform;
     float4x4 projection = maths::perspective(70, 1, 0.01f, 1000.0f);
 
+    Mesh player;
+    loadOBJFile(console, "meshes/player.obj", player);
+
     Mesh racket;
     loadOBJFile(console, "meshes/racket.obj", racket);
 
     Mesh suzanne;
     loadOBJFile(console, "meshes/suzanne.obj", suzanne);
 
-    Mesh player;
-    loadOBJFile(console, "meshes/player.obj", player);
-
     while (true)
     {
-        delta += 0.01f;
+        delta += 0.005f;
 
         rasterizer.clear();
-        rasterizer.draw_triangles(player.vbo, player.ibo, player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        
+        //rasterizer.draw_triangles(player.vbo, player.ibo, player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        //rasterizer.draw_triangles(racket.vbo, racket.ibo, racket.ibo_length, projection * maths::translate(float3{ 0, 0, 1 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();
