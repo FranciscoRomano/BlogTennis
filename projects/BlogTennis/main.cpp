@@ -113,15 +113,18 @@ int main()
     Mesh suzanne;
     loadOBJFile(console, "meshes/suzanne.obj", suzanne);
 
+    unsigned int steps = 0;
+
     while (true)
     {
+        steps += 2;
         delta += 0.005f;
 
         rasterizer.clear();
         
-        //rasterizer.draw_triangles(player.vbo, player.ibo, player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
-        //rasterizer.draw_triangles(racket.vbo, racket.ibo, racket.ibo_length, projection * maths::translate(float3{ 0, 0, 1 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
-        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        //rasterizer.draw_triangles(player.vbo, player.ibo, steps % player.ibo_length, projection * maths::translate(float3{ 0, 1, 2 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        //rasterizer.draw_triangles(racket.vbo, racket.ibo, steps % racket.ibo_length, projection * maths::translate(float3{ 0, 0, 1 }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
+        rasterizer.draw_triangles(suzanne.vbo, suzanne.ibo, steps % suzanne.ibo_length, projection * maths::translate(float3{ 0, 0, 1.5f }) * maths::rotate(float3{ 0, 1, 0 }, delta * 2.0f));
 
         console.blitRGBA((FLOAT*)(float4*)rasterizer, length);
         console.writeA();
